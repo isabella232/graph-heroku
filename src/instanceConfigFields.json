@@ -1,8 +1,5 @@
 {
-  "clientId": {
-    "type": "string"
-  },
-  "clientSecret": {
+  "apiKey": {
     "type": "string",
     "mask": true
   }

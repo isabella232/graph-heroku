@@ -1,8 +1,9 @@
 import { IntegrationExecutionContext } from '@jupiterone/integration-sdk';
+import { getHerokuClient, retryHerokuGet } from './heroku';
 
-export default function validateInvocation(
+export default async function validateInvocation(
   context: IntegrationExecutionContext,
-) {
+): Promise<void> {
   context.logger.info(
     {
       instance: context.instance,
@@ -10,15 +11,25 @@ export default function validateInvocation(
     'Validating integration config...',
   );
 
-  if (isConfigurationValid(context.instance.config)) {
+  if (await isConfigurationValid(context)) {
     context.logger.info('Integration instance is valid!');
   } else {
     throw new Error('Failed to authenticate with provided credentials');
   }
 }
 
-function isConfigurationValid(config: any) {
-  // add your own validation logic to ensure you
-  // can hit the provider's apis.
-  return config.clientId && config.clientSecret;
+async function isConfigurationValid(
+  context: IntegrationExecutionContext,
+): Promise<boolean> {
+  const heroku = getHerokuClient(context.instance.config);
+
+  context.logger.info('Calling heroku api with provided api key...');
+
+  try {
+    await retryHerokuGet('/account');
+    return true;
+  } catch (error) {
+    context.logger.error({ error });
+    return false;
+  }
 }
