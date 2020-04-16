@@ -1,4 +1,4 @@
-import { handleError, getHerokuClient, retryHerokuGet } from './heroku';
+import { handleError, getHerokuClient, retryHerokuGet } from '../src/heroku';
 import nock from 'nock';
 import { retry } from '@lifeomic/attempt';
 
@@ -104,10 +104,10 @@ describe('retryHerokuGet', () => {
     const mockResponseBody = {
       name: 'name',
     };
-    nock('https://api.heroku.com').get(mockRoute).reply(404, mockResponseBody);
+    nock('https://api.heroku.com').get(mockRoute).reply(401, mockResponseBody);
 
     await expect(retryHerokuGet(mockRoute)).rejects.toThrow(
-      'Expected response to be successful, got 404',
+      'Expected response to be successful, got 401',
     );
   });
 });

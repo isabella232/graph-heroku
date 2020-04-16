@@ -1,5 +1,5 @@
-import validateInvocation from './validateInvocation';
-import { mockLogger } from '../test/logging';
+import validateInvocation from '../src/validateInvocation';
+import { mockLogger } from './tools/logging';
 import nock from 'nock';
 
 const context = {
@@ -31,7 +31,7 @@ describe('validateInvocation', () => {
   });
 
   test('should throw if heroku call fails', async () => {
-    mockHerokuApi(404);
+    mockHerokuApi(401);
     await expect(validateInvocation(context)).rejects.toThrow(
       'Failed to authenticate with provided credentials',
     );
