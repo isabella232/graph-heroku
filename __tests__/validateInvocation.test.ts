@@ -1,37 +1,39 @@
+import { Polly } from '@pollyjs/core';
+import NodeHTTPAdapter = require('@pollyjs/adapter-node-http');
 import validateInvocation from '../src/validateInvocation';
-import { mockLogger } from './tools/logging';
-import nock from 'nock';
+import { createMockExecutionContext } from '@jupiterone/integration-sdk/testing';
 
-const context = {
-  instance: {
-    config: {
-      apiKey: 'api-key',
-    },
-    id: 'id',
-    accountId: 'accountId',
-    name: 'name',
-    integrationDefinitionId: 'integrationDefinitionId',
+const context = createMockExecutionContext({
+  instanceConfig: {
+    apiKey: 'api-key',
   },
-  logger: mockLogger,
-  jobState: null,
-};
+});
 
-function mockHerokuApi(response: number): void {
-  const validationRoute = '/account';
-  const validationBody = {};
-  nock('https://api.heroku.com')
-    .get(validationRoute)
-    .reply(response, validationBody);
-}
+Polly.register(NodeHTTPAdapter);
+let polly: Polly;
+
+beforeEach(() => {
+  polly = new Polly('api.heroku.com', {
+    adapters: ['node-http'],
+  });
+});
+
+afterEach(() => {
+  polly.stop();
+});
 
 describe('validateInvocation', () => {
   test('should validate if heroku call passes', async () => {
-    mockHerokuApi(200);
+    polly.server
+      .get('https://api.heroku.com/account')
+      .intercept((req, res) => res.status(200).json({}));
     await expect(() => validateInvocation(context)).not.toThrow();
   });
 
   test('should throw if heroku call fails', async () => {
-    mockHerokuApi(401);
+    polly.server
+      .get('https://api.heroku.com/account')
+      .intercept((req, res) => res.status(401).json({}));
     await expect(validateInvocation(context)).rejects.toThrow(
       'Failed to authenticate with provided credentials',
     );
