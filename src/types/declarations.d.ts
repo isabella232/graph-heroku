@@ -28,7 +28,7 @@ declare module 'heroku-client' {
     get(
       route: string,
       herokuRequestOptions?: HerokuRequestOptions,
-    ): Promise<object>;
+    ): Promise<object[]>;
 
     request(herokuRequestObject: HerokuRequestObject): Promise<object>;
   }
