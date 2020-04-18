@@ -1,5 +1,5 @@
 import { IntegrationExecutionContext } from '@jupiterone/integration-sdk';
-import { getHerokuClient, retryHerokuGet } from './heroku';
+import { getHerokuClient } from './heroku';
 
 export default async function validateInvocation(
   context: IntegrationExecutionContext,
@@ -24,9 +24,8 @@ async function isConfigurationValid(
   const heroku = getHerokuClient(context.instance.config);
 
   context.logger.info('Calling heroku api with provided api key...');
-
   try {
-    await retryHerokuGet('/account');
+    await heroku.retryGet('/account');
     return true;
   } catch (error) {
     context.logger.error({ error });

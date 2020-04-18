@@ -1,25 +1,23 @@
-import { handleError, getHerokuClient, retryHerokuGet } from '../src/heroku';
-import nock from 'nock';
-import { retry } from '@lifeomic/attempt';
+import { Polly } from '@pollyjs/core';
+import NodeHTTPAdapter = require('@pollyjs/adapter-node-http');
+import { handleError, getHerokuClient } from '../src/heroku';
+
+Polly.register(NodeHTTPAdapter);
+let polly: Polly;
 
 jest.useFakeTimers();
 
-describe('handleError', () => {
-  test('should sleep if statusCode == rate_limit', async () => {
-    const abortFunc = jest.fn();
-    const attemptContext = {
-      abort: abortFunc,
-    };
-
-    const err = {
-      statusCode: 429,
-    };
-
-    handleError(err, attemptContext);
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-    expect(abortFunc).not.toHaveBeenCalled();
+beforeEach(() => {
+  polly = new Polly('api.heroku.com', {
+    adapters: ['node-http'],
   });
+});
 
+afterEach(() => {
+  polly.stop();
+});
+
+describe('handleError', () => {
   test('should abort if statusCode is not retryable', async () => {
     const abortFunc = jest.fn();
     const attemptContext = {
@@ -42,7 +40,7 @@ describe('handleError', () => {
     };
 
     const err = {
-      statusCode: 499,
+      statusCode: 500,
     };
 
     handleError(err, attemptContext);
@@ -66,47 +64,31 @@ describe('handleError', () => {
   });
 });
 
-describe('createHerokuClient', () => {
-  test('should throw if client does not exist and config not passed', async () => {
-    const config = {
-      apiKey: 'my-api-key',
-    };
-
-    expect(() => getHerokuClient()).toThrow(
-      'Cannot get heroku client; client has not been initialized!',
-    );
-  });
-
-  test('should create client if none exists', async () => {
-    const config = {
-      apiKey: 'my-api-key',
-    };
-
-    const client = getHerokuClient(config);
-    expect(client).toBeTruthy();
-  });
-});
-
-describe('retryHerokuGet', () => {
+describe('heroku.retryGet', () => {
   test('should return if no exception is thrown', async () => {
+    const heroku = getHerokuClient({ apiKey: 'api-key ' });
     const mockRoute = '/account';
     const mockResponseBody = {
       name: 'name',
     };
-    nock('https://api.heroku.com').get(mockRoute).reply(200, mockResponseBody);
 
-    const response = await retryHerokuGet(mockRoute);
+    polly.server
+      .get(`https://api.heroku.com${mockRoute}`)
+      .intercept((req, res) => res.status(200).json(mockResponseBody));
+
+    const response = await heroku.retryGet(mockRoute);
     expect(response).toMatchObject(mockResponseBody);
   });
 
   test('should handle error if exception is thrown', async () => {
+    const heroku = getHerokuClient({ apiKey: 'api-key ' });
     const mockRoute = '/account';
-    const mockResponseBody = {
-      name: 'name',
-    };
-    nock('https://api.heroku.com').get(mockRoute).reply(401, mockResponseBody);
 
-    await expect(retryHerokuGet(mockRoute)).rejects.toThrow(
+    polly.server
+      .get(`https://api.heroku.com${mockRoute}`)
+      .intercept((req, res) => res.status(401).json({}));
+
+    await expect(heroku.retryGet(mockRoute)).rejects.toThrow(
       'Expected response to be successful, got 401',
     );
   });
