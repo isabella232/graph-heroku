@@ -27,7 +27,6 @@ describe('handleError', () => {
     };
 
     handleError(err, attemptContext);
-    expect(setTimeout).not.toHaveBeenCalled();
     expect(abortFunc).toHaveBeenCalledTimes(1);
   });
 
@@ -42,7 +41,6 @@ describe('handleError', () => {
     };
 
     handleError(err, attemptContext);
-    expect(setTimeout).not.toHaveBeenCalled();
     expect(abortFunc).not.toHaveBeenCalled();
   });
 
@@ -57,7 +55,6 @@ describe('handleError', () => {
     };
 
     handleError(err, attemptContext);
-    expect(setTimeout).not.toHaveBeenCalled();
     expect(abortFunc).not.toHaveBeenCalled();
   });
 });
