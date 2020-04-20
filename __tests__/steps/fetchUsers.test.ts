@@ -2,11 +2,10 @@
 import { createMockStepExecutionContext } from '@jupiterone/integration-sdk/testing';
 import { Polly } from '@pollyjs/core';
 import NodeHTTPAdapter = require('@pollyjs/adapter-node-http');
-import sinon from 'sinon';
 import { v4 as uuid } from 'uuid';
 
 import step from '../../src/steps/fetchUsers';
-import * as utils from '../../src/util/getIdsFromJobState';
+import { makeMockEntitiesWithIds } from '../../test/helpers/makeMockEntitiesWithIds';
 
 import {
   HerokuTeamMember,
@@ -20,12 +19,6 @@ const instanceConfig = {
 
 Polly.register(NodeHTTPAdapter);
 let polly: Polly;
-
-let getIdsFromJobStateStub: sinon.stub;
-
-function stubGetIdsFromJobStateType(_type: string, response: string[]): void {
-  getIdsFromJobStateStub.withArgs(_type, sinon.match.any).resolves(response);
-}
 
 function makeIdentityProvider() {
   return {
@@ -191,9 +184,6 @@ function testAddingMembersFromAccounts(withNullFields) {
       withNullFields,
     );
 
-    stubGetIdsFromJobStateType('heroku_team', []);
-    stubGetIdsFromJobStateType('heroku_account', [accountId]);
-
     polly.server
       .get(`https://api.heroku.com/enterprise-accounts/${accountId}/members`)
       .intercept((req, res) => res.status(200).json([herokuAccountMember]));
@@ -201,7 +191,13 @@ function testAddingMembersFromAccounts(withNullFields) {
       .get(`https://api.heroku.com/users/${herokuAccountMember.user.id}`)
       .intercept((req, res) => res.status(200).json([herokuUser]));
 
-    const context = createMockStepExecutionContext({ instanceConfig });
+    const entities = makeMockEntitiesWithIds([
+      { _type: 'heroku_account', id: accountId },
+    ]);
+    const context = createMockStepExecutionContext({
+      instanceConfig,
+      entities,
+    });
     const addEntities = jest.spyOn(context.jobState, 'addEntities');
     const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
@@ -240,9 +236,6 @@ function testAddingMembersFromTeams(withNullFields) {
       withNullFields,
     );
 
-    stubGetIdsFromJobStateType('heroku_team', [teamId]);
-    stubGetIdsFromJobStateType('heroku_account', []);
-
     polly.server
       .get(`https://api.heroku.com/teams/${teamId}/members`)
       .intercept((req, res) => res.status(200).json([herokuTeamMember]));
@@ -250,7 +243,13 @@ function testAddingMembersFromTeams(withNullFields) {
       .get(`https://api.heroku.com/users/${herokuTeamMember.user.id}`)
       .intercept((req, res) => res.status(200).json([herokuUser]));
 
-    const context = createMockStepExecutionContext({ instanceConfig });
+    const entities = makeMockEntitiesWithIds([
+      { _type: 'heroku_team', id: teamId },
+    ]);
+    const context = createMockStepExecutionContext({
+      instanceConfig,
+      entities,
+    });
     const addEntities = jest.spyOn(context.jobState, 'addEntities');
     const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
@@ -277,20 +276,15 @@ beforeEach(() => {
   polly = new Polly('api.heroku.com', {
     adapters: ['node-http'],
   });
-  getIdsFromJobStateStub = sinon.stub(utils, 'getIdsFromJobState');
 });
 
 afterEach(() => {
-  getIdsFromJobStateStub.restore();
   polly.stop();
 });
 
 describe('executionHandler', () => {
   describe('no accounts or teams', () => {
     test(`should add nothing if no teams or accounts returned from jobState`, async () => {
-      stubGetIdsFromJobStateType('heroku_team', []);
-      stubGetIdsFromJobStateType('heroku_account', []);
-
       const context = createMockStepExecutionContext({ instanceConfig });
       const addEntities = jest.spyOn(context.jobState, 'addEntities');
       const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
@@ -311,14 +305,18 @@ describe('executionHandler', () => {
 
     test(`should add nothing if no members returned`, async () => {
       const teamId = uuid();
-      stubGetIdsFromJobStateType('heroku_team', [teamId]);
-      stubGetIdsFromJobStateType('heroku_account', []);
 
       polly.server
         .get(`https://api.heroku.com/teams/${teamId}/members`)
         .intercept((req, res) => res.status(200).json([]));
 
-      const context = createMockStepExecutionContext({ instanceConfig });
+      const entities = makeMockEntitiesWithIds([
+        { _type: 'heroku_team', id: teamId },
+      ]);
+      const context = createMockStepExecutionContext({
+        instanceConfig,
+        entities,
+      });
       const addEntities = jest.spyOn(context.jobState, 'addEntities');
       const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
@@ -332,8 +330,6 @@ describe('executionHandler', () => {
 
     test(`should not add member if not returned by /users/:userId`, async () => {
       const teamId = uuid();
-      stubGetIdsFromJobStateType('heroku_team', [teamId]);
-      stubGetIdsFromJobStateType('heroku_account', []);
 
       const teamMember = makeHerokuTeamMember(false);
 
@@ -344,7 +340,13 @@ describe('executionHandler', () => {
         .get(`https://api.heroku.com/users/${teamMember.user.id}`)
         .intercept((req, res) => res.status(200).json([]));
 
-      const context = createMockStepExecutionContext({ instanceConfig });
+      const entities = makeMockEntitiesWithIds([
+        { _type: 'heroku_team', id: teamId },
+      ]);
+      const context = createMockStepExecutionContext({
+        instanceConfig,
+        entities,
+      });
       const addEntities = jest.spyOn(context.jobState, 'addEntities');
       const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
@@ -364,14 +366,18 @@ describe('executionHandler', () => {
 
     test(`should add nothing if no members returned`, async () => {
       const accountId = uuid();
-      stubGetIdsFromJobStateType('heroku_team', []);
-      stubGetIdsFromJobStateType('heroku_account', [accountId]);
 
       polly.server
         .get(`https://api.heroku.com/enterprise-accounts/${accountId}/members`)
         .intercept((req, res) => res.status(200).json([]));
 
-      const context = createMockStepExecutionContext({ instanceConfig });
+      const entities = makeMockEntitiesWithIds([
+        { _type: 'heroku_account', id: accountId },
+      ]);
+      const context = createMockStepExecutionContext({
+        instanceConfig,
+        entities,
+      });
       const addEntities = jest.spyOn(context.jobState, 'addEntities');
       const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
@@ -385,8 +391,6 @@ describe('executionHandler', () => {
 
     test(`should not add member if not returned by /users/:userId`, async () => {
       const accountId = uuid();
-      stubGetIdsFromJobStateType('heroku_team', []);
-      stubGetIdsFromJobStateType('heroku_account', [accountId]);
 
       const accountMember = makeHerokuAccountMember(false, accountId);
 
@@ -397,7 +401,13 @@ describe('executionHandler', () => {
         .get(`https://api.heroku.com/users/${accountMember.user.id}`)
         .intercept((req, res) => res.status(200).json([]));
 
-      const context = createMockStepExecutionContext({ instanceConfig });
+      const entities = makeMockEntitiesWithIds([
+        { _type: 'heroku_account', id: accountId },
+      ]);
+      const context = createMockStepExecutionContext({
+        instanceConfig,
+        entities,
+      });
       const addEntities = jest.spyOn(context.jobState, 'addEntities');
       const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
