@@ -1,5 +1,4 @@
-import { Polly } from '@pollyjs/core';
-import NodeHTTPAdapter = require('@pollyjs/adapter-node-http');
+import { Polly } from '../test/polly';
 import validateInvocation from '../src/validateInvocation';
 import { createMockExecutionContext } from '@jupiterone/integration-sdk/testing';
 
@@ -9,7 +8,6 @@ const context = createMockExecutionContext({
   },
 });
 
-Polly.register(NodeHTTPAdapter);
 let polly: Polly;
 
 beforeEach(() => {
