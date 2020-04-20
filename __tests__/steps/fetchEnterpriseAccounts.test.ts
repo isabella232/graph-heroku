@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { createMockStepExecutionContext } from '@jupiterone/integration-sdk/testing';
-import { Polly } from '@pollyjs/core';
-import NodeHTTPAdapter = require('@pollyjs/adapter-node-http');
+import { Polly } from '../../test/polly';
 import { v4 as uuid } from 'uuid';
 import step from '../../src/steps/fetchEnterpriseAccounts';
 
-Polly.register(NodeHTTPAdapter);
 let polly: Polly;
 
 const instanceConfig = {
