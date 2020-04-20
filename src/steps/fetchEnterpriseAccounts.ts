@@ -3,7 +3,7 @@ import {
   IntegrationStepExecutionContext,
   createIntegrationEntity,
 } from '@jupiterone/integration-sdk';
-import { getHerokuClient } from '../heroku';
+import { HerokuClient } from '../heroku';
 import { HerokuEnterpriseAccount } from '../types/herokuTypes';
 
 // WARNING: Heroku labels this API as in DEVELOPMENT
@@ -17,7 +17,7 @@ const step: IntegrationStep = {
     instance,
     jobState,
   }: IntegrationStepExecutionContext) {
-    const heroku = getHerokuClient(instance.config);
+    const heroku = new HerokuClient(instance.config);
     logger.info('Calling /enterprise-accounts API...');
     const enterpriseAccounts: HerokuEnterpriseAccount[] = await heroku.retryGet(
       '/enterprise-accounts',

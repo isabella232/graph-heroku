@@ -4,7 +4,7 @@ import {
   createIntegrationEntity,
   createIntegrationRelationship,
 } from '@jupiterone/integration-sdk';
-import { getHerokuClient } from '../heroku';
+import { HerokuClient } from '../heroku';
 import {
   HerokuTeamMember,
   HerokuEnterpriseMember,
@@ -29,7 +29,7 @@ const step: IntegrationStep = {
     instance,
     jobState,
   }: IntegrationStepExecutionContext) {
-    const heroku = getHerokuClient(instance.config);
+    const heroku = new HerokuClient(instance.config);
 
     logger.info('Retrieving heroku_teams from jobState...');
     const teamIds = await getIdsFromJobState('heroku_team', jobState);
