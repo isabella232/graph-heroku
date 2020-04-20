@@ -20,19 +20,21 @@ export async function handleError(err, attemptContext): Promise<void> {
   }
 }
 
-export function getHerokuClient(config: HerokuIntegrationConfig) {
-  const heroku = new Heroku({
-    token: config.apiKey,
-  });
+export class HerokuClient {
+  heroku: Heroku;
 
-  return {
-    retryGet: async (route: string): Promise<any[]> => {
-      return retry(async () => heroku.get(route), {
-        handleError,
-        delay: Math.ceil(SECONDS_PER_API_REQUEST),
-        factor: 2,
-        maxAttempts: 5,
-      });
-    },
-  };
+  constructor(config: HerokuIntegrationConfig) {
+    this.heroku = new Heroku({
+      token: config.apiKey,
+    });
+  }
+
+  retryGet(route: string): Promise<any> {
+    return retry(async () => this.heroku.get(route), {
+      handleError,
+      delay: Math.ceil(SECONDS_PER_API_REQUEST),
+      factor: 2,
+      maxAttempts: 5,
+    });
+  }
 }

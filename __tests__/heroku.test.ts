@@ -1,6 +1,6 @@
 import { Polly } from '@pollyjs/core';
 import NodeHTTPAdapter = require('@pollyjs/adapter-node-http');
-import { handleError, getHerokuClient } from '../src/heroku';
+import { handleError, HerokuClient } from '../src/heroku';
 
 Polly.register(NodeHTTPAdapter);
 let polly: Polly;
@@ -66,7 +66,7 @@ describe('handleError', () => {
 
 describe('heroku.retryGet', () => {
   test('should return if no exception is thrown', async () => {
-    const heroku = getHerokuClient({ apiKey: 'api-key ' });
+    const heroku = new HerokuClient({ apiKey: 'api-key ' });
     const mockRoute = '/account';
     const mockResponseBody = {
       name: 'name',
@@ -81,7 +81,7 @@ describe('heroku.retryGet', () => {
   });
 
   test('should handle error if exception is thrown', async () => {
-    const heroku = getHerokuClient({ apiKey: 'api-key ' });
+    const heroku = new HerokuClient({ apiKey: 'api-key ' });
     const mockRoute = '/account';
 
     polly.server
