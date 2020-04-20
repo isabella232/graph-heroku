@@ -49,12 +49,9 @@ describe('executionHandler', () => {
       });
 
     const context = createMockStepExecutionContext({ instanceConfig });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([
+    expect(context.jobState.collectedEntities).toMatchObject([
       {
         _class: ['Account'],
         _key: responseBody[0].id,
@@ -79,7 +76,7 @@ describe('executionHandler', () => {
         name: 'name',
       },
     ]);
-    expect(addRelationships).not.toHaveBeenCalled();
+    expect(context.jobState.collectedRelationships).toMatchObject([]);
   });
 
   test('should add accounts with null fields returned by /enterprise-accounts', async () => {
@@ -102,12 +99,9 @@ describe('executionHandler', () => {
       });
 
     const context = createMockStepExecutionContext({ instanceConfig });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([
+    expect(context.jobState.collectedEntities).toMatchObject([
       {
         _class: ['Account'],
         _key: responseBody[0].id,
@@ -132,7 +126,7 @@ describe('executionHandler', () => {
         name: 'name',
       },
     ]);
-    expect(addRelationships).not.toHaveBeenCalled();
+    expect(context.jobState.collectedRelationships).toMatchObject([]);
   });
 
   test('should add nothing if no accounts returned by /enterprise-accounts', async () => {
@@ -145,12 +139,9 @@ describe('executionHandler', () => {
       });
 
     const context = createMockStepExecutionContext({ instanceConfig });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([]);
-    expect(addRelationships).not.toHaveBeenCalled();
+    expect(context.jobState.collectedEntities).toMatchObject([]);
+    expect(context.jobState.collectedRelationships).toMatchObject([]);
   });
 });

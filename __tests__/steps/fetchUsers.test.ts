@@ -196,15 +196,12 @@ function testAddingMembersFromAccounts(withNullFields) {
       instanceConfig,
       entities,
     });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([makeUserEntity(herokuUser)]);
-    expect(addRelationships).toHaveBeenCalledTimes(2);
-    expect(addRelationships).toHaveBeenCalledWith([]);
-    expect(addRelationships).toHaveBeenCalledWith([
+    expect(context.jobState.collectedEntities).toMatchObject([
+      makeUserEntity(herokuUser),
+    ]);
+    expect(context.jobState.collectedRelationships).toMatchObject([
       {
         _key: `${accountId}|has|${herokuUser.id}`,
         _type: 'heroku_account_has_user',
@@ -248,15 +245,12 @@ function testAddingMembersFromTeams(withNullFields) {
       instanceConfig,
       entities,
     });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([makeUserEntity(herokuUser)]);
-    expect(addRelationships).toHaveBeenCalledTimes(2);
-    expect(addRelationships).toHaveBeenCalledWith([]);
-    expect(addRelationships).toHaveBeenCalledWith([
+    expect(context.jobState.collectedEntities).toMatchObject([
+      makeUserEntity(herokuUser),
+    ]);
+    expect(context.jobState.collectedRelationships).toMatchObject([
       {
         _key: `${teamId}|has|${herokuUser.id}`,
         _type: 'heroku_team_has_user',
@@ -284,15 +278,10 @@ describe('executionHandler', () => {
   describe('no accounts or teams', () => {
     test(`should add nothing if no teams or accounts returned from jobState`, async () => {
       const context = createMockStepExecutionContext({ instanceConfig });
-      const addEntities = jest.spyOn(context.jobState, 'addEntities');
-      const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
 
-      expect(addEntities).toHaveBeenCalledTimes(1);
-      expect(addEntities).toHaveBeenCalledWith([]);
-      expect(addRelationships).toHaveBeenCalledTimes(2);
-      expect(addRelationships).toHaveBeenNthCalledWith(1, []);
-      expect(addRelationships).toHaveBeenNthCalledWith(2, []);
+      expect(context.jobState.collectedEntities).toMatchObject([]);
+      expect(context.jobState.collectedRelationships).toMatchObject([]);
     });
   });
 
@@ -315,15 +304,10 @@ describe('executionHandler', () => {
         instanceConfig,
         entities,
       });
-      const addEntities = jest.spyOn(context.jobState, 'addEntities');
-      const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
 
-      expect(addEntities).toHaveBeenCalledTimes(1);
-      expect(addEntities).toHaveBeenCalledWith([]);
-      expect(addRelationships).toHaveBeenCalledTimes(2);
-      expect(addRelationships).toHaveBeenNthCalledWith(1, []);
-      expect(addRelationships).toHaveBeenNthCalledWith(2, []);
+      expect(context.jobState.collectedEntities).toMatchObject([]);
+      expect(context.jobState.collectedRelationships).toMatchObject([]);
     });
 
     test(`should not add member if not returned by /users/:userId`, async () => {
@@ -345,15 +329,10 @@ describe('executionHandler', () => {
         instanceConfig,
         entities,
       });
-      const addEntities = jest.spyOn(context.jobState, 'addEntities');
-      const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
 
-      expect(addEntities).toHaveBeenCalledTimes(1);
-      expect(addEntities).toHaveBeenCalledWith([]);
-      expect(addRelationships).toHaveBeenCalledTimes(2);
-      expect(addRelationships).toHaveBeenNthCalledWith(1, []);
-      expect(addRelationships).toHaveBeenNthCalledWith(2, []);
+      expect(context.jobState.collectedEntities).toMatchObject([]);
+      expect(context.jobState.collectedRelationships).toMatchObject([]);
     });
   });
 
@@ -376,15 +355,10 @@ describe('executionHandler', () => {
         instanceConfig,
         entities,
       });
-      const addEntities = jest.spyOn(context.jobState, 'addEntities');
-      const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
 
-      expect(addEntities).toHaveBeenCalledTimes(1);
-      expect(addEntities).toHaveBeenCalledWith([]);
-      expect(addRelationships).toHaveBeenCalledTimes(2);
-      expect(addRelationships).toHaveBeenNthCalledWith(1, []);
-      expect(addRelationships).toHaveBeenNthCalledWith(2, []);
+      expect(context.jobState.collectedEntities).toMatchObject([]);
+      expect(context.jobState.collectedRelationships).toMatchObject([]);
     });
 
     test(`should not add member if not returned by /users/:userId`, async () => {
@@ -406,15 +380,10 @@ describe('executionHandler', () => {
         instanceConfig,
         entities,
       });
-      const addEntities = jest.spyOn(context.jobState, 'addEntities');
-      const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
       await step.executionHandler(context);
 
-      expect(addEntities).toHaveBeenCalledTimes(1);
-      expect(addEntities).toHaveBeenCalledWith([]);
-      expect(addRelationships).toHaveBeenCalledTimes(2);
-      expect(addRelationships).toHaveBeenNthCalledWith(1, []);
-      expect(addRelationships).toHaveBeenNthCalledWith(2, []);
+      expect(context.jobState.collectedEntities).toMatchObject([]);
+      expect(context.jobState.collectedRelationships).toMatchObject([]);
     });
   });
 });

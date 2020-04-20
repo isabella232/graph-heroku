@@ -55,12 +55,9 @@ describe('executionHandler', () => {
       .intercept((req, res) => res.status(200).json(responseBody));
 
     const context = createMockStepExecutionContext({ instanceConfig });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([
+    expect(context.jobState.collectedEntities).toMatchObject([
       {
         _class: ['Team'],
         _key: responseBody[0].id,
@@ -91,8 +88,7 @@ describe('executionHandler', () => {
       },
     ]);
 
-    expect(addRelationships).toHaveBeenCalledTimes(1);
-    expect(addRelationships).toHaveBeenCalledWith([
+    expect(context.jobState.collectedRelationships).toMatchObject([
       {
         _class: 'HAS',
         _fromEntityKey: responseBody[0].enterprise_account.id,
@@ -127,12 +123,9 @@ describe('executionHandler', () => {
       .intercept((req, res) => res.status(200).json(responseBody));
 
     const context = createMockStepExecutionContext({ instanceConfig });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([
+    expect(context.jobState.collectedEntities).toMatchObject([
       {
         _class: ['Team'],
         _key: responseBody[0].id,
@@ -162,9 +155,7 @@ describe('executionHandler', () => {
         name: 'name',
       },
     ]);
-
-    expect(addRelationships).toHaveBeenCalledTimes(1);
-    expect(addRelationships).toHaveBeenCalledWith([]);
+    expect(context.jobState.collectedRelationships).toMatchObject([]);
   });
 
   test('should add nothing if no teams returned by /teams', async () => {
@@ -175,13 +166,9 @@ describe('executionHandler', () => {
       .intercept((req, res) => res.status(200).json(responseBody));
 
     const context = createMockStepExecutionContext({ instanceConfig });
-    const addEntities = jest.spyOn(context.jobState, 'addEntities');
-    const addRelationships = jest.spyOn(context.jobState, 'addRelationships');
     await step.executionHandler(context);
 
-    expect(addEntities).toHaveBeenCalledTimes(1);
-    expect(addEntities).toHaveBeenCalledWith([]);
-    expect(addRelationships).toHaveBeenCalledTimes(1);
-    expect(addRelationships).toHaveBeenCalledWith([]);
+    expect(context.jobState.collectedEntities).toMatchObject([]);
+    expect(context.jobState.collectedRelationships).toMatchObject([]);
   });
 });
