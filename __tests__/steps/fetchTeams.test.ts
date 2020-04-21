@@ -1,174 +1,87 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { createMockStepExecutionContext } from '@jupiterone/integration-sdk/testing';
-import { Polly } from '../../test/polly';
-import { v4 as uuid } from 'uuid';
+import {
+  createMockStepExecutionContext,
+  Recording,
+  setupRecording,
+} from '@jupiterone/integration-sdk/testing';
 import step from '../../src/steps/fetchTeams';
 
-const instanceConfig = {
-  apiKey: 'api-key',
-};
-
-let polly: Polly;
-
-beforeEach(() => {
-  polly = new Polly('api.heroku.com', {
-    adapters: ['node-http'],
-  });
-});
+let recording: Recording;
 
 afterEach(() => {
-  polly.stop();
+  recording.stop();
 });
 
 describe('executionHandler', () => {
-  test('should add teams returned by /teams', async () => {
-    const responseBody = [
-      {
-        id: uuid(),
-        name: 'name',
-        created_at: 'created_at',
-        updated_at: 'updated_at',
-        default: true,
-        credit_card_collections: true,
-        enterprise_account: {
-          id: uuid(),
-          name: 'enterprise_account_name',
-        },
-        membership_limit: 100,
-        identity_provider: {
-          id: uuid(),
-          name: 'name',
-          owner: {
-            id: uuid(),
-            name: 'name',
-            type: 'type',
-          },
-        },
-        provisioned_licenses: true,
-        role: 'role',
-        type: 'type',
-      },
-    ];
+  test('should add teams-with-enterpriseAccount returned by /teams', async () => {
+    recording = setupRecording({
+      name: 'teams-with-enterpriseAccount',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
 
-    polly.server
-      .get('https://api.heroku.com/teams')
-      .intercept((req, res) => res.status(200).json(responseBody));
-
-    const context = createMockStepExecutionContext({ instanceConfig });
+    const context = createMockStepExecutionContext();
     await step.executionHandler(context);
 
-    expect(context.jobState.collectedEntities).toMatchObject([
-      {
+    expect(context.jobState.collectedEntities).toEqual([
+      expect.objectContaining({
         _class: ['Team'],
-        _key: responseBody[0].id,
-        _rawData: [
-          {
-            name: 'default',
-            rawData: {
-              createdAt: 'created_at',
-              creditCardCollections: true,
-              default: true,
-              enterpriseAccountId: responseBody[0].enterprise_account.id,
-              id: responseBody[0].id,
-              identityProviderId: responseBody[0].identity_provider.id,
-              membershipLimit: 100,
-              name: 'name',
-              provisionedLicenses: true,
-              type: 'type',
-              role: 'role',
-              updatedAt: 'updated_at',
-            },
-          },
-        ],
+        _key: '1e2fd576-c276-483d-8440-3c956e0fe015',
         _type: 'heroku_team',
-        createdOn: undefined,
-        displayName: 'name',
-        id: responseBody[0].id,
-        name: 'name',
-      },
+        createdOn: 1586992452000,
+        displayName: 'ndowmon-lifeomic-test',
+        id: '1e2fd576-c276-483d-8440-3c956e0fe015',
+        name: 'ndowmon-lifeomic-test',
+      }),
     ]);
 
-    expect(context.jobState.collectedRelationships).toMatchObject([
+    expect(context.jobState.collectedRelationships).toEqual([
       {
         _class: 'HAS',
-        _fromEntityKey: responseBody[0].enterprise_account.id,
-        _key: `${responseBody[0].enterprise_account.id}|has|${responseBody[0].id}`,
-        _toEntityKey: responseBody[0].id,
+        _fromEntityKey: '01234567-89ab-cdef-0123-456789abcdef',
+        _key:
+          '01234567-89ab-cdef-0123-456789abcdef|has|1e2fd576-c276-483d-8440-3c956e0fe015',
+        _toEntityKey: '1e2fd576-c276-483d-8440-3c956e0fe015',
         _type: 'heroku_account_has_team',
         displayName: 'HAS',
       },
     ]);
   });
 
-  test('should add teams with null fields returned by /teams', async () => {
-    const responseBody = [
-      {
-        id: uuid(),
-        name: 'name',
-        created_at: null,
-        updated_at: null,
-        default: null,
-        credit_card_collections: null,
-        enterprise_account: null,
-        membership_limit: null,
-        identity_provider: null,
-        provisioned_licenses: null,
-        role: null,
-        type: null,
-      },
-    ];
+  test('should add teams-without-enterpriseAccount returned by /teams', async () => {
+    recording = setupRecording({
+      name: 'teams-without-enterpriseAccount',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
 
-    polly.server
-      .get('https://api.heroku.com/teams')
-      .intercept((req, res) => res.status(200).json(responseBody));
-
-    const context = createMockStepExecutionContext({ instanceConfig });
+    const context = createMockStepExecutionContext();
     await step.executionHandler(context);
 
-    expect(context.jobState.collectedEntities).toMatchObject([
-      {
+    expect(context.jobState.collectedEntities).toEqual([
+      expect.objectContaining({
         _class: ['Team'],
-        _key: responseBody[0].id,
-        _rawData: [
-          {
-            name: 'default',
-            rawData: {
-              createdAt: null,
-              creditCardCollections: null,
-              default: null,
-              enterpriseAccountId: null,
-              id: responseBody[0].id,
-              identityProviderId: null,
-              membershipLimit: null,
-              name: 'name',
-              provisionedLicenses: null,
-              type: null,
-              role: null,
-              updatedAt: null,
-            },
-          },
-        ],
+        _key: '1e2fd576-c276-483d-8440-3c956e0fe015',
         _type: 'heroku_team',
-        createdOn: undefined,
-        displayName: 'name',
-        id: responseBody[0].id,
-        name: 'name',
-      },
+        createdOn: 1586992452000,
+        displayName: 'ndowmon-lifeomic-test',
+        id: '1e2fd576-c276-483d-8440-3c956e0fe015',
+        name: 'ndowmon-lifeomic-test',
+      }),
     ]);
-    expect(context.jobState.collectedRelationships).toMatchObject([]);
+    expect(context.jobState.collectedRelationships).toEqual([]);
   });
 
-  test('should add nothing if no teams returned by /teams', async () => {
-    const responseBody = [];
+  test('should add nothing if no-teams-returned by /teams', async () => {
+    recording = setupRecording({
+      name: 'no-teams',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
 
-    polly.server
-      .get('https://api.heroku.com/teams')
-      .intercept((req, res) => res.status(200).json(responseBody));
-
-    const context = createMockStepExecutionContext({ instanceConfig });
+    const context = createMockStepExecutionContext();
     await step.executionHandler(context);
 
-    expect(context.jobState.collectedEntities).toMatchObject([]);
-    expect(context.jobState.collectedRelationships).toMatchObject([]);
+    expect(context.jobState.collectedEntities).toEqual([]);
+    expect(context.jobState.collectedRelationships).toEqual([]);
   });
 });
