@@ -187,7 +187,7 @@ function testAddingMembersFromAccounts(withNullFields) {
       .intercept((req, res) => res.status(200).json([herokuAccountMember]));
     polly.server
       .get(`https://api.heroku.com/users/${herokuAccountMember.user.id}`)
-      .intercept((req, res) => res.status(200).json([herokuUser]));
+      .intercept((req, res) => res.status(200).json(herokuUser));
 
     const entities = makeMockEntitiesWithIds([
       { _type: 'heroku_account', id: accountId },
@@ -236,7 +236,7 @@ function testAddingMembersFromTeams(withNullFields) {
       .intercept((req, res) => res.status(200).json([herokuTeamMember]));
     polly.server
       .get(`https://api.heroku.com/users/${herokuTeamMember.user.id}`)
-      .intercept((req, res) => res.status(200).json([herokuUser]));
+      .intercept((req, res) => res.status(200).json(herokuUser));
 
     const entities = makeMockEntitiesWithIds([
       { _type: 'heroku_team', id: teamId },
@@ -320,7 +320,7 @@ describe('executionHandler', () => {
         .intercept((req, res) => res.status(200).json([teamMember]));
       polly.server
         .get(`https://api.heroku.com/users/${teamMember.user.id}`)
-        .intercept((req, res) => res.status(200).json([]));
+        .intercept((req, res) => res.status(404));
 
       const entities = makeMockEntitiesWithIds([
         { _type: 'heroku_team', id: teamId },
@@ -331,8 +331,28 @@ describe('executionHandler', () => {
       });
       await step.executionHandler(context);
 
-      expect(context.jobState.collectedEntities).toMatchObject([]);
-      expect(context.jobState.collectedRelationships).toMatchObject([]);
+      expect(context.jobState.collectedEntities).toMatchObject([
+        expect.objectContaining({
+          _class: ['User'],
+          _key: teamMember.user.id,
+          _type: 'heroku_user',
+          displayName: 'name',
+          email: 'email@email.com',
+          id: teamMember.user.id,
+          name: 'name',
+          username: 'email@email.com',
+        }),
+      ]);
+      expect(context.jobState.collectedRelationships).toMatchObject([
+        expect.objectContaining({
+          _class: 'HAS',
+          _fromEntityKey: teamId,
+          _toEntityKey: teamMember.user.id,
+          _type: 'heroku_team_has_user',
+          displayName: 'HAS',
+          role: 'role',
+        }),
+      ]);
     });
   });
 
@@ -371,7 +391,7 @@ describe('executionHandler', () => {
         .intercept((req, res) => res.status(200).json([accountMember]));
       polly.server
         .get(`https://api.heroku.com/users/${accountMember.user.id}`)
-        .intercept((req, res) => res.status(200).json([]));
+        .intercept((req, res) => res.status(404));
 
       const entities = makeMockEntitiesWithIds([
         { _type: 'heroku_account', id: accountId },
@@ -382,8 +402,30 @@ describe('executionHandler', () => {
       });
       await step.executionHandler(context);
 
-      expect(context.jobState.collectedEntities).toMatchObject([]);
-      expect(context.jobState.collectedRelationships).toMatchObject([]);
+      expect(context.jobState.collectedEntities).toMatchObject([
+        expect.objectContaining({
+          _class: ['User'],
+          _key: accountMember.user.id,
+          _type: 'heroku_user',
+          createdOn: undefined,
+          displayName: 'email@email.com',
+          email: 'email@email.com',
+          id: accountMember.user.id,
+          name: 'email@email.com',
+          username: 'email@email.com',
+        }),
+      ]);
+      expect(context.jobState.collectedRelationships).toMatchObject([
+        expect.objectContaining({
+          _class: 'HAS',
+          _fromEntityKey: accountId,
+          _toEntityKey: accountMember.user.id,
+          _type: 'heroku_account_has_user',
+          displayName: 'HAS',
+          permissions:
+            '[{"description":"permissionDescription","name":"permissionName"}]',
+        }),
+      ]);
     });
   });
 });

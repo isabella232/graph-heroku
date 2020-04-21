@@ -39,23 +39,23 @@ export interface HerokuTeam {
 }
 
 export interface HerokuUser {
-  allow_tracking: boolean;
-  beta: boolean;
-  created_at: string;
+  allow_tracking?: boolean;
+  beta?: boolean;
+  created_at?: string;
   email: string;
-  federated: boolean;
+  federated?: boolean;
   id: string;
-  identity_provider: Partial<HerokuIdentityProvider> | null;
-  last_login: string;
+  identity_provider?: Partial<HerokuIdentityProvider> | null;
+  last_login?: string;
   name: string;
-  sms_number: string;
-  suspended_at: string | null;
-  delinquent_at: string | null;
-  two_factor_authentication: boolean;
-  updated_at: string;
-  verified: boolean;
-  default_organization: Partial<HerokuTeam> | null;
-  default_team: Partial<HerokuTeam> | null;
+  sms_number?: string;
+  suspended_at?: string | null;
+  delinquent_at?: string | null;
+  two_factor_authentication?: boolean;
+  updated_at?: string;
+  verified?: boolean;
+  default_organization?: Partial<HerokuTeam> | null;
+  default_team?: Partial<HerokuTeam> | null;
 }
 
 interface HerokuMember {
