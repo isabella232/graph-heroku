@@ -450,10 +450,10 @@
   dependencies:
     ajv "^6.12.0"
 
-"@jupiterone/integration-sdk@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@jupiterone/integration-sdk/-/integration-sdk-0.5.0.tgz#2dd5bbe3b151f90198e716558cf7890e98437af3"
-  integrity sha512-bB2FlLtxekYOe7WlzfeuNVyqOXWDb2ePkuu6vUtfC0iG0Po+E0GN3R3iPZu7v9abIX30/O8lnwtW/JuRBsWiGg==
+"@jupiterone/integration-sdk@^0.8.0":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@jupiterone/integration-sdk/-/integration-sdk-0.8.1.tgz#894b20dc4e22291fe198eabed04aae735e8070b7"
+  integrity sha512-ghu655r+X/neYyEfXGTR1tsKx3J4uLlJRH6XOL0UWVW58ZZnbzjAZmrhBm8X+TZJQQQe9kONB+DnSKyo+zoIDQ==
   dependencies:
     "@jupiterone/data-model" "^0.2.0"
     "@pollyjs/adapter-node-http" "^4.0.4"
@@ -471,6 +471,7 @@
     p-map "^4.0.0"
     p-queue "^6.3.0"
     rimraf "^3.0.2"
+    upath "^1.2.0"
     uuid "^7.0.3"
 
 "@lifeomic/attempt@^3.0.0":
@@ -4996,6 +4997,11 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+upath@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
+  integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
 
 uri-js@^4.2.2:
   version "4.2.2"
