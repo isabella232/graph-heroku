@@ -11,6 +11,7 @@ import {
   HerokuUser,
 } from '../../types/herokuTypes';
 import { getIdsFromJobState } from '../../util/getIdsFromJobState';
+import keysToCamel from '../../util/keysToCamel';
 
 // note: No /users endpoint exists to fetch all users.
 // WARNING: Heroku labels these APIs as in DEVELOPMENT
@@ -36,28 +37,8 @@ const step: IntegrationStep = {
       return createIntegrationEntity({
         entityData: {
           source: {
-            id: e.id,
-            name: e.name,
-            username: e.email, // no username available.
-            email: e.email,
-            verified: e.verified,
-            allowTracking: e.allow_tracking,
-            federated: e.federated,
-            twoFactorAuthentication: e.two_factor_authentication,
-            smsNumber: e.sms_number,
-            createdAt: e.created_at,
-            updatedAt: e.updated_at,
-            suspendedAt: e.suspended_at,
-            lastLogin: e.last_login,
-            delinquentAt: e.delinquent_at,
-            beta: e.beta,
-            defaultTeamId: e.default_team ? e.default_team.id : null,
-            defaultOrganizationId: e.default_organization
-              ? e.default_organization.id
-              : null,
-            identityProviderId: e.identity_provider
-              ? e.identity_provider.id
-              : null,
+            ...keysToCamel(e),
+            username: e.email,
           },
           assign: {
             _key: e.id,

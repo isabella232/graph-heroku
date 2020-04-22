@@ -6,6 +6,7 @@ import {
 } from '@jupiterone/integration-sdk';
 import { HerokuClient } from '../../heroku';
 import { HerokuTeam } from '../../types/herokuTypes';
+import keysToCamel from '../../util/keysToCamel';
 
 // WARNING: Heroku labels this API as in DEVELOPMENT
 // https://devcenter.heroku.com/articles/platform-api-reference#team
@@ -27,22 +28,7 @@ const step: IntegrationStep = {
       return createIntegrationEntity({
         entityData: {
           source: {
-            id: e.id,
-            name: e.name,
-            createdAt: e.created_at,
-            updatedAt: e.updated_at,
-            default: e.default,
-            creditCardCollections: e.credit_card_collections,
-            membershipLimit: e.membership_limit,
-            provisionedLicenses: e.provisioned_licenses,
-            role: e.role,
-            type: e.type,
-            identityProviderId: e.identity_provider
-              ? e.identity_provider.id
-              : null,
-            enterpriseAccountId: e.enterprise_account
-              ? e.enterprise_account.id
-              : null,
+            ...keysToCamel(e),
           },
           assign: {
             _key: e.id,

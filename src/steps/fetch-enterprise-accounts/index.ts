@@ -5,6 +5,7 @@ import {
 } from '@jupiterone/integration-sdk';
 import { HerokuClient } from '../../heroku';
 import { HerokuEnterpriseAccount } from '../../types/herokuTypes';
+import keysToCamel from '../../util/keysToCamel';
 
 // WARNING: Heroku labels this API as in DEVELOPMENT
 // https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
@@ -27,15 +28,7 @@ const step: IntegrationStep = {
       return createIntegrationEntity({
         entityData: {
           source: {
-            id: e.id,
-            name: e.name,
-            createdAt: e.created_at,
-            updatedAt: e.updated_at,
-            trial: e.trial,
-            permissions: e.permissions ? e.permissions.toString() : null, // parse list to string?
-            identityProviderId: e.identity_provider
-              ? e.identity_provider.id
-              : null,
+            ...keysToCamel(e),
           },
           assign: {
             _key: e.id,
