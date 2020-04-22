@@ -1,37 +1,37 @@
-import { Polly } from '../test/polly';
 import validateInvocation from '../src/validateInvocation';
-import { createMockExecutionContext } from '@jupiterone/integration-sdk/testing';
+import {
+  createMockExecutionContext,
+  Recording,
+  setupRecording,
+} from '@jupiterone/integration-sdk/testing';
 
-const context = createMockExecutionContext({
-  instanceConfig: {
-    apiKey: 'api-key',
-  },
-});
+const context = createMockExecutionContext();
 
-let polly: Polly;
-
-beforeEach(() => {
-  polly = new Polly('api.heroku.com', {
-    adapters: ['node-http'],
-  });
-});
+let recording: Recording;
 
 afterEach(() => {
-  polly.stop();
+  recording.stop();
 });
 
 describe('validateInvocation', () => {
   test('should validate if heroku call passes', async () => {
-    polly.server
-      .get('https://api.heroku.com/account')
-      .intercept((req, res) => res.status(200).json({}));
-    await expect(() => validateInvocation(context)).not.toThrow();
+    recording = setupRecording({
+      name: 'validate-invocation-pass',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
+
+    const response = await validateInvocation(context);
+    expect(response).toBe(undefined);
   });
 
   test('should throw if heroku call fails', async () => {
-    polly.server
-      .get('https://api.heroku.com/account')
-      .intercept((req, res) => res.status(401).json({}));
+    recording = setupRecording({
+      name: 'validate-invocation-fail',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
+
     await expect(validateInvocation(context)).rejects.toThrow(
       'Failed to authenticate with provided credentials',
     );
