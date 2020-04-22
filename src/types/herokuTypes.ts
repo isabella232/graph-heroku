@@ -13,16 +13,6 @@ interface HerokuPermission {
   name: string;
 }
 
-export interface HerokuEnterpriseAccount {
-  id: string;
-  name: string;
-  created_at: string;
-  updated_at: string;
-  permissions: string[];
-  trial: boolean;
-  identity_provider: HerokuIdentityProvider | null;
-}
-
 export interface HerokuTeam {
   id: string;
   name: string;
@@ -30,7 +20,7 @@ export interface HerokuTeam {
   updated_at: string;
   default: boolean;
   credit_card_collections: boolean;
-  enterprise_account: Partial<HerokuEnterpriseAccount> | null;
+  enterprise_account?: { id: string; name: string };
   identity_provider: Partial<HerokuIdentityProvider> | null;
   membership_limit: number;
   provisioned_licenses: boolean;

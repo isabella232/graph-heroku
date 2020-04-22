@@ -2,9 +2,10 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   createIntegrationEntity,
+  Entity,
+  getTime,
 } from '@jupiterone/integration-sdk';
 import { HerokuClient } from '../../heroku';
-import { HerokuEnterpriseAccount } from '../../types/herokuTypes';
 
 // WARNING: Heroku labels this API as in DEVELOPMENT
 // https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
@@ -18,36 +19,35 @@ const step: IntegrationStep = {
     jobState,
   }: IntegrationStepExecutionContext) {
     const heroku = new HerokuClient(instance.config);
+
     logger.info('Calling /enterprise-accounts API...');
-    const enterpriseAccounts: HerokuEnterpriseAccount[] = await heroku.retryGet(
-      '/enterprise-accounts',
-    );
+    const enterpriseAccounts = await heroku.getEnterpriseAccounts();
 
-    const accountEntities = enterpriseAccounts.map((e) => {
-      return createIntegrationEntity({
-        entityData: {
-          source: {
-            id: e.id,
-            name: e.name,
-            createdAt: e.created_at,
-            updatedAt: e.updated_at,
-            trial: e.trial,
-            permissions: e.permissions ? e.permissions.toString() : null, // parse list to string?
-            identityProviderId: e.identity_provider
-              ? e.identity_provider.id
-              : null,
-          },
-          assign: {
-            _key: e.id,
-            _type: 'heroku_account',
-            _class: 'Account',
-          },
-        },
-      });
-    });
-
-    await jobState.addEntities(accountEntities);
+    await jobState.addEntities(enterpriseAccounts.map(createAccountEntity));
   },
 };
 
 export default step;
+
+interface EnterpriseAccount {
+  id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export function createAccountEntity(
+  enterpriseAccount: EnterpriseAccount,
+): Entity {
+  return createIntegrationEntity({
+    entityData: {
+      source: enterpriseAccount,
+      assign: {
+        _key: enterpriseAccount.id,
+        _type: 'heroku_account',
+        _class: 'Account',
+        createdOn: getTime(enterpriseAccount.created_at),
+        updatedOn: getTime(enterpriseAccount.updated_at),
+      },
+    },
+  });
+}

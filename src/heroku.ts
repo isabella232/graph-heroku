@@ -37,4 +37,10 @@ export class HerokuClient {
       maxAttempts: 5,
     });
   }
+
+  getEnterpriseAccounts(): Promise<
+    { id: string; created_at: string; updated_at: string }[]
+  > {
+    return this.retryGet('/enterprise-accounts');
+  }
 }
