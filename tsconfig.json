@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es2018",
-    "lib": ["es2018"],
+    "lib": ["es2018", "ES2019.Array"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,
