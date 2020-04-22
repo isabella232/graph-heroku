@@ -4,13 +4,13 @@ import {
   createIntegrationEntity,
   createIntegrationRelationship,
 } from '@jupiterone/integration-sdk';
-import { HerokuClient } from '../heroku';
+import { HerokuClient } from '../../heroku';
 import {
   HerokuTeamMember,
   HerokuEnterpriseMember,
   HerokuUser,
-} from '../types/herokuTypes';
-import { getIdsFromJobState } from '../util/getIdsFromJobState';
+} from '../../types/herokuTypes';
+import { getIdsFromJobState } from '../../util/getIdsFromJobState';
 
 // note: No /users endpoint exists to fetch all users.
 // WARNING: Heroku labels these APIs as in DEVELOPMENT

@@ -5,8 +5,8 @@ import {
   setupRecording,
 } from '@jupiterone/integration-sdk/testing';
 
-import step from '../../src/steps/fetchUsers';
-import { makeMockEntitiesWithIds } from '../../test/helpers/makeMockEntitiesWithIds';
+import step from '..';
+import { makeMockEntitiesWithIds } from '../../../../test/helpers/makeMockEntitiesWithIds';
 
 let recording: Recording;
 

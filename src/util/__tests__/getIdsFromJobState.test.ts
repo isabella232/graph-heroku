@@ -1,6 +1,6 @@
 import { createMockStepExecutionContext } from '@jupiterone/integration-sdk/testing';
 import { v4 as uuid } from 'uuid';
-import { getIdsFromJobState } from '../../src/util/getIdsFromJobState';
+import { getIdsFromJobState } from '../getIdsFromJobState';
 
 test('should return a list of ids from jobState', async () => {
   const key1 = uuid();

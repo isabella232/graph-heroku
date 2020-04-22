@@ -4,7 +4,7 @@ import {
   setupRecording,
   Recording,
 } from '@jupiterone/integration-sdk/testing';
-import step from '../../src/steps/fetchEnterpriseAccounts';
+import step from '..';
 
 let recording: Recording;
 

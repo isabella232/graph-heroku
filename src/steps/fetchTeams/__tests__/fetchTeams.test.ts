@@ -3,7 +3,7 @@ import {
   Recording,
   setupRecording,
 } from '@jupiterone/integration-sdk/testing';
-import step from '../../src/steps/fetchTeams';
+import step from '..';
 
 let recording: Recording;
 

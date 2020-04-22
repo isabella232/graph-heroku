@@ -1,4 +1,4 @@
-import validateInvocation from '../src/validateInvocation';
+import validateInvocation from '../validateInvocation';
 import {
   createMockExecutionContext,
   Recording,

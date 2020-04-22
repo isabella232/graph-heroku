@@ -1,4 +1,4 @@
-import { handleError, HerokuClient } from '../src/heroku';
+import { handleError, HerokuClient } from '../heroku';
 import { setupRecording } from '@jupiterone/integration-sdk/testing';
 
 describe('handleError', () => {

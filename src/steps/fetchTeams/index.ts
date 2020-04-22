@@ -4,8 +4,8 @@ import {
   createIntegrationEntity,
   createIntegrationRelationship,
 } from '@jupiterone/integration-sdk';
-import { HerokuClient } from '../heroku';
-import { HerokuTeam } from '../types/herokuTypes';
+import { HerokuClient } from '../../heroku';
+import { HerokuTeam } from '../../types/herokuTypes';
 
 // WARNING: Heroku labels this API as in DEVELOPMENT
 // https://devcenter.heroku.com/articles/platform-api-reference#team
