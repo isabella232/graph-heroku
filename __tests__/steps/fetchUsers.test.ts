@@ -22,9 +22,6 @@ describe('executionHandler', () => {
         name: 'INVALID_RECORDING',
         directory: __dirname,
         redactedRequestHeaders: ['authorization'],
-        options: {
-          logging: true,
-        },
       });
       const context = createMockStepExecutionContext();
       await step.executionHandler(context);
@@ -40,10 +37,6 @@ describe('executionHandler', () => {
         name: 'team-member-add',
         directory: __dirname,
         redactedRequestHeaders: ['authorization'],
-        options: {
-          logging: false,
-          recordFailedRequests: true,
-        },
       });
       const teamId = '1e2fd576-c276-483d-8440-3c956e0fe015';
 
