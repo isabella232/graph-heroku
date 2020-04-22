@@ -450,7 +450,7 @@
   dependencies:
     ajv "^6.12.0"
 
-"@jupiterone/integration-sdk@^0.8.0":
+"@jupiterone/integration-sdk@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@jupiterone/integration-sdk/-/integration-sdk-0.8.1.tgz#894b20dc4e22291fe198eabed04aae735e8070b7"
   integrity sha512-ghu655r+X/neYyEfXGTR1tsKx3J4uLlJRH6XOL0UWVW58ZZnbzjAZmrhBm8X+TZJQQQe9kONB+DnSKyo+zoIDQ==
