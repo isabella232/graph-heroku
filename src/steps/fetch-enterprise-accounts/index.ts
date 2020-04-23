@@ -7,12 +7,15 @@ import {
 } from '@jupiterone/integration-sdk';
 import { HerokuClient } from '../../heroku';
 
+export const STEP_ID = 'fetch-enterprise-accounts';
+export const ACCOUNT_TYPE = 'heroku_account';
+
 // WARNING: Heroku labels this API as in DEVELOPMENT
 // https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
 const step: IntegrationStep = {
-  id: 'fetch-enterprise-accounts',
+  id: STEP_ID,
   name: 'Fetch Enterprise Accounts',
-  types: ['heroku_enterprise_account'],
+  types: [ACCOUNT_TYPE],
   async executionHandler({
     logger,
     instance,
@@ -43,8 +46,9 @@ export function createAccountEntity(
       source: enterpriseAccount,
       assign: {
         _key: enterpriseAccount.id,
-        _type: 'heroku_account',
+        _type: ACCOUNT_TYPE,
         _class: 'Account',
+        id: enterpriseAccount.id,
         createdOn: getTime(enterpriseAccount.created_at),
         updatedOn: getTime(enterpriseAccount.updated_at),
       },

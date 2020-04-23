@@ -38,9 +38,19 @@ export class HerokuClient {
     });
   }
 
-  getEnterpriseAccounts(): Promise<
-    { id: string; created_at: string; updated_at: string }[]
-  > {
+  getEnterpriseAccounts() {
     return this.retryGet('/enterprise-accounts');
+  }
+
+  getEnterpriseAccountTeams(enterpriseAccountId: string) {
+    return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/teams`);
+  }
+
+  getEnterpriseAccountMembers(enterpriseAccountId: string) {
+    return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/members`);
+  }
+
+  getUser(userId: string) {
+    return this.retryGet(`/users/${userId}`);
   }
 }
