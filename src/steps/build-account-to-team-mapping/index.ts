@@ -24,7 +24,7 @@ const step: IntegrationStep = {
     const accountIdMap = await createAccountIdMap(jobState);
 
     await jobState.iterateEntities({ _type: TEAM_TYPE }, async (team) => {
-      const account = accountIdMap.get(team.accountId as number);
+      const account = accountIdMap.get(team.enterpriseAccountId as number);
 
       if (account) {
         await jobState.addRelationships([
@@ -43,7 +43,7 @@ async function createAccountIdMap(
   const accountIdMap = new Map<number, Entity>();
   await jobState.iterateEntities({ _type: ACCOUNT_TYPE }, (account) => {
     // unfortunately need to cast because of EntityPropertyValue type
-    accountIdMap.set(account.ID as number, account);
+    accountIdMap.set(account.id as number, account);
   });
   return accountIdMap;
 }
