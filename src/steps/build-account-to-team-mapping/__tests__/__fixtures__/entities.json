@@ -1,0 +1,23 @@
+[
+  {
+    "_class": ["Account"],
+    "_key": "account-id",
+    "_type": "heroku_account",
+    "createdOn": 1325419200000,
+    "updatedOn": 1325419200000,
+    "displayName": "example",
+    "id": "account-id",
+    "name": "example"
+  },
+  {
+    "_class": ["Team"],
+    "_key": "team-id",
+    "_type": "heroku_team",
+    "createdOn": 1325419200000,
+    "updatedOn": 1325419200000,
+    "displayName": "example",
+    "id": "team-id",
+    "name": "example",
+    "enterpriseAccountId": "account-id"
+  }
+]
