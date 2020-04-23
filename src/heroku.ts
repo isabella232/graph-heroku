@@ -1,5 +1,11 @@
 import Heroku from 'heroku-client';
 import { retry } from '@lifeomic/attempt';
+import {
+  HerokuEnterpriseAccount,
+  HerokuEnterpriseAccountTeam,
+  HerokuEnterpriseAccountMember,
+  HerokuUser,
+} from './types/herokuTypes';
 
 interface HerokuIntegrationConfig {
   apiKey: string;
@@ -29,12 +35,32 @@ export class HerokuClient {
     });
   }
 
-  retryGet(route: string): Promise<any> {
+  retryGet(route: string): Promise<object[]> {
     return retry(async () => this.heroku.get(route), {
       handleError,
       delay: Math.ceil(SECONDS_PER_API_REQUEST),
       factor: 2,
       maxAttempts: 5,
     });
+  }
+
+  getEnterpriseAccounts(): Promise<HerokuEnterpriseAccount[]> {
+    return this.retryGet('/enterprise-accounts');
+  }
+
+  getEnterpriseAccountTeams(
+    enterpriseAccountId: string,
+  ): Promise<HerokuEnterpriseAccountTeam[]> {
+    return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/teams`);
+  }
+
+  getEnterpriseAccountMembers(
+    enterpriseAccountId: string,
+  ): Promise<HerokuEnterpriseAccountMember[]> {
+    return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/members`);
+  }
+
+  getUser(userId: string): Promise<HerokuUser[]> {
+    return this.retryGet(`/users/${userId}`);
   }
 }

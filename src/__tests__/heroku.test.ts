@@ -1,19 +1,5 @@
-import { Polly } from '../test/polly';
-import { handleError, HerokuClient } from '../src/heroku';
-
-let polly: Polly;
-
-jest.useFakeTimers();
-
-beforeEach(() => {
-  polly = new Polly('api.heroku.com', {
-    adapters: ['node-http'],
-  });
-});
-
-afterEach(() => {
-  polly.stop();
-});
+import { handleError, HerokuClient } from '../heroku';
+import { setupRecording } from '@jupiterone/integration-sdk/testing';
 
 describe('handleError', () => {
   test('should abort if statusCode is not retryable', async () => {
@@ -27,7 +13,6 @@ describe('handleError', () => {
     };
 
     handleError(err, attemptContext);
-    expect(setTimeout).not.toHaveBeenCalled();
     expect(abortFunc).toHaveBeenCalledTimes(1);
   });
 
@@ -42,7 +27,6 @@ describe('handleError', () => {
     };
 
     handleError(err, attemptContext);
-    expect(setTimeout).not.toHaveBeenCalled();
     expect(abortFunc).not.toHaveBeenCalled();
   });
 
@@ -57,37 +41,39 @@ describe('handleError', () => {
     };
 
     handleError(err, attemptContext);
-    expect(setTimeout).not.toHaveBeenCalled();
     expect(abortFunc).not.toHaveBeenCalled();
   });
 });
 
 describe('heroku.retryGet', () => {
   test('should return if no exception is thrown', async () => {
-    const heroku = new HerokuClient({ apiKey: 'api-key ' });
-    const mockRoute = '/account';
-    const mockResponseBody = {
-      name: 'name',
-    };
+    const heroku = new HerokuClient({ apiKey: 'api-key' });
+    const retryRoute = '/account';
 
-    polly.server
-      .get(`https://api.heroku.com${mockRoute}`)
-      .intercept((req, res) => res.status(200).json(mockResponseBody));
+    const recording = setupRecording({
+      name: 'heroku-get-return',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
 
-    const response = await heroku.retryGet(mockRoute);
-    expect(response).toMatchObject(mockResponseBody);
+    const response = await heroku.retryGet(retryRoute);
+    expect(response).toMatchObject({ name: 'Nick Dowmon' });
+    recording.stop();
   });
 
   test('should handle error if exception is thrown', async () => {
     const heroku = new HerokuClient({ apiKey: 'api-key ' });
-    const mockRoute = '/account';
+    const retryRoute = '/account';
 
-    polly.server
-      .get(`https://api.heroku.com${mockRoute}`)
-      .intercept((req, res) => res.status(401).json({}));
+    const recording = setupRecording({
+      name: 'heroku-get-throw',
+      directory: __dirname,
+      redactedRequestHeaders: ['authorization'],
+    });
 
-    await expect(heroku.retryGet(mockRoute)).rejects.toThrow(
+    await expect(heroku.retryGet(retryRoute)).rejects.toThrow(
       'Expected response to be successful, got 401',
     );
+    recording.stop();
   });
 });

@@ -1,10 +1,6 @@
 declare module 'heroku-client' {
   interface HerokuConstructorOptions {
     token: string;
-    cache?: {
-      store: any;
-      encryptor: any;
-    };
   }
 
   interface HerokuRequestOptions {
@@ -28,7 +24,7 @@ declare module 'heroku-client' {
     get(
       route: string,
       herokuRequestOptions?: HerokuRequestOptions,
-    ): Promise<object>;
+    ): Promise<object[]>;
 
     request(herokuRequestObject: HerokuRequestObject): Promise<object>;
   }
