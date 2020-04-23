@@ -1,6 +1,8 @@
+import { Entity } from '@jupiterone/integration-sdk';
+
 export function makeMockEntitiesWithIds(
   jobStateIds: { _type: string; id: string }[],
-) {
+): Entity[] {
   return jobStateIds.map((t) => {
     return {
       _class: 'class',
