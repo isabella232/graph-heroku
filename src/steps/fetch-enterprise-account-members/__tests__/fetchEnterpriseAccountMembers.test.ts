@@ -17,24 +17,24 @@ afterEach(() => {
 
 const partialMember = {
   enterprise_account: {
-    id: '01234567-89ab-cdef-0123-456789abcdef',
+    id: 'enterprise-account-id-0000-0000-0000',
     name: 'example',
   },
-  id: '01234567-89ab-cdef-0123-456789abcdef',
+  id: 'member-id-0000-0000-0000',
   permissions: [
     { description: 'View enterprise account members and teams.', name: 'view' },
   ],
   user: {
     email: 'username@example.com',
-    id: '01234567-89ab-cdef-0123-456789abcdef',
+    id: 'user-id-0000-0000-0000',
   },
   two_factor_authentication: true,
   identity_provider: {
-    id: '01234567-89ab-cdef-0123-456789abcdef',
+    id: 'identity-provider-id-0000-0000-0000',
     name: 'acme',
     redacted: false,
     owner: {
-      id: '01234567-89ab-cdef-0123-456789abcdef',
+      id: 'owner-id-0000-0000-0000',
       name: 'acme',
       type: 'team',
     },
@@ -63,12 +63,12 @@ test('should convert members to entities', () => {
 
   expect(entity).toMatchObject({
     _class: ['User'],
-    _key: '01234567-89ab-cdef-0123-456789abcdef',
+    _key: 'user-id-0000-0000-0000',
     _type: 'heroku_account_member',
     createdOn: undefined,
     updatedOn: undefined,
     displayName: 'username@example.com',
-    id: '01234567-89ab-cdef-0123-456789abcdef',
+    id: 'user-id-0000-0000-0000',
     name: 'username@example.com',
     enterpriseAccountId: entities[0].id,
   });
@@ -92,7 +92,7 @@ test('should collect data during step', async () => {
 
   expect(context.jobState.collectedEntities).toEqual([
     expect.objectContaining({
-      id: '01234567-89ab-cdef-0123-456789abcdef',
+      id: 'user-id-0000-0000-0000',
     }),
   ]);
 });
