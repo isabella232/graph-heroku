@@ -11,6 +11,7 @@ and this project adheres to
 ### Added
 
 - Added fetch-team-apps step
+- Added build-team-to-app-mapping step
 
 ## [0.0.1] - 2020-04-24
 

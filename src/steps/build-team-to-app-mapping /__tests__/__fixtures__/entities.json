@@ -1,0 +1,19 @@
+[
+  {
+    "_class": ["Team"],
+    "_key": "1e2fd576-c276-483d-8440-3c956e0fe015",
+    "id": "1e2fd576-c276-483d-8440-3c956e0fe015",
+    "_type": "heroku_team"
+  },
+  {
+    "_class": ["Application"],
+    "_key": "2a089907-da73-49d6-b569-5f4a89c65ba9",
+    "_type": "heroku_application",
+    "createdOn": 1587750793000,
+    "displayName": "ndowmon-gmail-test-app",
+    "id": "2a089907-da73-49d6-b569-5f4a89c65ba9",
+    "name": "ndowmon-gmail-test-app",
+    "updatedOn": 1587752306000,
+    "teamId": "1e2fd576-c276-483d-8440-3c956e0fe015"
+  }
+]

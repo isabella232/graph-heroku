@@ -21,8 +21,9 @@ The following entity resources are ingested when the integration runs.
 
 ### Relationships
 
-| From             | Edge    | To                      |
-| ---------------- | ------- | ----------------------- |
-| `heroku_account` | **HAS** | `heroku_team`           |
-| `heroku_account` | **HAS** | `heroku_account_member` |
-| `heroku_team`    | **HAS** | `heroku_account_member` |
+| From             | Edge     | To                      |
+| ---------------- | -------- | ----------------------- |
+| `heroku_account` | **HAS**  | `heroku_team`           |
+| `heroku_account` | **HAS**  | `heroku_account_member` |
+| `heroku_team`    | **HAS**  | `heroku_account_member` |
+| `heroku_team`    | **OWNS** | `heroku_application`    |

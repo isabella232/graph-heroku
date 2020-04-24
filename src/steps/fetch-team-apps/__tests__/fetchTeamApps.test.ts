@@ -93,6 +93,8 @@ test('should convert members to entities', () => {
     id: '2a089907-da73-49d6-b569-5f4a89c65ba9',
     name: 'ndowmon-gmail-test-app',
     updatedOn: 1587752306000,
+    teamId: '1e2fd576-c276-483d-8440-3c956e0fe015',
+    owner: 'ndowmon-lifeomic-test@herokumanager.com',
   });
 });
 
