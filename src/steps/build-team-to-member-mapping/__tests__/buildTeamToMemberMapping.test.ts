@@ -32,6 +32,7 @@ test('should create team-member relationship', async () => {
       _toEntityKey: '2372b250-7a66-49db-88f6-14052ae638cc',
       _type: 'heroku_team_has_account_member',
       displayName: 'HAS',
+      role: 'member',
     }),
     expect.objectContaining({
       _class: 'HAS',
@@ -41,6 +42,7 @@ test('should create team-member relationship', async () => {
       _toEntityKey: 'fdc6ef12-ed55-44b7-83a9-09b1a9c35ea8',
       _type: 'heroku_team_has_account_member',
       displayName: 'HAS',
+      role: 'admin',
     }),
   ]);
   recording.stop();

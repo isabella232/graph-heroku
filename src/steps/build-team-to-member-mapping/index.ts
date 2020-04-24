@@ -38,7 +38,7 @@ const step: IntegrationStep = {
 
         if (user) {
           await jobState.addRelationships([
-            createTeamToMemberRelationship(team, user),
+            createTeamToMemberRelationship(team, user, teamMember.role),
           ]);
         }
       }
@@ -62,10 +62,12 @@ async function createUserIdMap(
 export function createTeamToMemberRelationship(
   team: Entity,
   user: Entity,
+  role: string,
 ): Relationship {
   return createIntegrationRelationship({
     _class: 'HAS',
     from: team,
     to: user,
+    properties: { role },
   });
 }
