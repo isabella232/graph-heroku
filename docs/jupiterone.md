@@ -17,6 +17,7 @@ The following entity resources are ingested when the integration runs.
 | Enterprise Accounts | `heroku_account`        | `Account`             |
 | Team                | `heroku_team`           | `Team`                |
 | User                | `heroku_account_member` | `User`                |
+| Application         | `heroku_application`    | `Application`         |
 
 ### Relationships
 

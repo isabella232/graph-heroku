@@ -8,6 +8,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Added fetch-team-apps step
+
 ## [0.0.1] - 2020-04-24
 
 ### Added
