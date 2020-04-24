@@ -30,18 +30,20 @@ etc.
 Once you've created your account, you'll need to generate an API Key to access
 the Heroku API.
 
-1. Visit https://dashboard.heroku.com/account/applications and click
-   `Create authorization`. ![](./images/heroku-authorizations.png)
+1. Visit <https://dashboard.heroku.com/account/applications> and click
+   `Create authorization`.
+   ![Heroku Authorizations Page](./images/heroku-authorizations.png)
 
 1. Add a `Description` and an optional `Expires after (seconds)` value , then
-   click `Create`. ![](./images/create-authorization.png)
+   click `Create`.
+   ![Heroku Create Authorization Modal](./images/create-authorization.png)
 
 1. Copy your API key into a `.env` file at the root of this project. The file's
    contents should appear as below:
 
-```
-API_KEY=<your-api-key>
-```
+   ```bash
+   API_KEY=<your-api-key>
+   ```
 
 The API always requires two headers to be set - `Authorization`, using your
 specific `API_KEY`, and `Accept`, with the value

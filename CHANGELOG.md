@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD024-->
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -12,6 +14,10 @@ and this project adheres to
 
 - Added fetch-team-apps step
 - Added build-team-to-app-mapping step
+
+### Fixed
+
+- Centralized project's API documentation in `src/heroku.ts`
 
 ## [0.0.1] - 2020-04-24
 
