@@ -1,0 +1,30 @@
+[
+  {
+    "_class": ["Team"],
+    "_key": "1e2fd576-c276-483d-8440-3c956e0fe015",
+    "id": "1e2fd576-c276-483d-8440-3c956e0fe015",
+    "_type": "heroku_team"
+  },
+  {
+    "_class": ["User"],
+    "_key": "2372b250-7a66-49db-88f6-14052ae638cc",
+    "_type": "heroku_account_member",
+    "createdOn": 1325419200000,
+    "updatedOn": 1325419200000,
+    "displayName": "ndowmon@gmail.com",
+    "id": "2372b250-7a66-49db-88f6-14052ae638cc",
+    "name": "ndowmon@gmail.com",
+    "enterpriseAccountId": "account-id"
+  },
+  {
+    "_class": ["User"],
+    "_key": "fdc6ef12-ed55-44b7-83a9-09b1a9c35ea8",
+    "_type": "heroku_account_member",
+    "createdOn": 1325419200000,
+    "updatedOn": 1325419200000,
+    "displayName": "ndowmon@gmail.com",
+    "id": "fdc6ef12-ed55-44b7-83a9-09b1a9c35ea8",
+    "name": "ndowmon@gmail.com",
+    "enterpriseAccountId": "account-id"
+  }
+]

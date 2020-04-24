@@ -6,35 +6,38 @@ import {
   JobState,
 } from '@jupiterone/integration-sdk';
 import {
-  STEP_ID as TEAM_STEP,
-  TEAM_TYPE,
-} from '../fetch-enterprise-account-teams';
+  STEP_ID as MEMBER_STEP,
+  ACCOUNT_MEMBER_TYPE,
+} from '../fetch-enterprise-account-members';
 import {
   STEP_ID as ACCOUNT_STEP,
   ACCOUNT_TYPE,
 } from '../fetch-enterprise-accounts';
 
 const step: IntegrationStep = {
-  id: 'build-account-to-team-relationships',
-  name: 'Build Account-to-Team Relationships',
+  id: 'build-account-to-member-relationships',
+  name: 'Build Account-to-Member Relationships',
   types: [],
-  dependsOn: [ACCOUNT_STEP, TEAM_STEP],
+  dependsOn: [ACCOUNT_STEP, MEMBER_STEP],
   async executionHandler({ jobState }: IntegrationStepExecutionContext) {
     const accountIdMap = await createAccountIdMap(jobState);
 
-    await jobState.iterateEntities({ _type: TEAM_TYPE }, async (team) => {
-      const account = accountIdMap.get(team.enterpriseAccountId as string);
+    await jobState.iterateEntities(
+      { _type: ACCOUNT_MEMBER_TYPE },
+      async (member) => {
+        const account = accountIdMap.get(member.enterpriseAccountId as string);
 
-      if (account) {
-        await jobState.addRelationships([
-          createIntegrationRelationship({
-            _class: 'HAS',
-            from: account,
-            to: team,
-          }),
-        ]);
-      }
-    });
+        if (account) {
+          await jobState.addRelationships([
+            createIntegrationRelationship({
+              _class: 'HAS',
+              from: account,
+              to: member,
+            }),
+          ]);
+        }
+      },
+    );
   },
 };
 

@@ -48,9 +48,10 @@ export function createAccountMemberEntity(member, accountId): Entity {
     entityData: {
       source: member,
       assign: {
-        _key: member.id,
+        _key: member.user.id,
         _type: ACCOUNT_MEMBER_TYPE,
         _class: 'User',
+        id: member.user.id,
         createdOn: getTime(member.created_at),
         updatedOn: getTime(member.updated_at),
         enterpriseAccountId: accountId,

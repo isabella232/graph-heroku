@@ -5,6 +5,7 @@ import {
   HerokuEnterpriseAccountTeam,
   HerokuEnterpriseAccountMember,
   HerokuUser,
+  HerokuTeamMember,
 } from './types/herokuTypes';
 
 interface HerokuIntegrationConfig {
@@ -58,6 +59,10 @@ export class HerokuClient {
     enterpriseAccountId: string,
   ): Promise<HerokuEnterpriseAccountMember[]> {
     return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/members`);
+  }
+
+  getTeamMembers(teamId: string): Promise<HerokuTeamMember[]> {
+    return this.retryGet(`/teams/${teamId}/members`);
   }
 
   getUser(userId: string): Promise<HerokuUser[]> {
