@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD024-->
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -7,6 +9,18 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.0] - 2020-04-24
+
+### Added
+
+- Added fetch-team-apps step
+- Added build-team-to-app-mapping step
+- Added gitleaks workflow
+
+### Fixed
+
+- Centralized project's API documentation in `src/heroku.ts`
 
 ## [0.0.1] - 2020-04-24
 
@@ -26,5 +40,6 @@ and this project adheres to
 - Added account, team, and user entities
 - Added account-> team relationship
 
-[unreleased]: https://github.com/JupiterOne/graph-heroku/compare/v0.0.1...HEAD
+[unreleased]: https://github.com/JupiterOne/graph-heroku/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/JupiterOne/graph-heroku/releases/tag/v0.1.0
 [0.0.1]: https://github.com/JupiterOne/graph-heroku/releases/tag/v0.0.1

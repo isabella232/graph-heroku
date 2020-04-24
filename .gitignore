@@ -1,3 +1,4 @@
 node_modules/
 .j1-integration/
 .env
+.eslintcache

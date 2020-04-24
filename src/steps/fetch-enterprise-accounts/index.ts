@@ -10,8 +10,6 @@ import { HerokuClient } from '../../heroku';
 export const STEP_ID = 'fetch-enterprise-accounts';
 export const ACCOUNT_TYPE = 'heroku_account';
 
-// WARNING: Heroku labels this API as in DEVELOPMENT
-// https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
 const step: IntegrationStep = {
   id: STEP_ID,
   name: 'Fetch Enterprise Accounts',
