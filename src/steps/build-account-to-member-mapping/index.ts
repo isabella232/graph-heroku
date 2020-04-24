@@ -2,7 +2,6 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   Entity,
-  Relationship,
   createIntegrationRelationship,
   JobState,
 } from '@jupiterone/integration-sdk';
