@@ -17,11 +17,13 @@ The following entity resources are ingested when the integration runs.
 | Enterprise Accounts | `heroku_account`        | `Account`             |
 | Team                | `heroku_team`           | `Team`                |
 | User                | `heroku_account_member` | `User`                |
+| Application         | `heroku_application`    | `Application`         |
 
 ### Relationships
 
-| From             | Edge    | To                      |
-| ---------------- | ------- | ----------------------- |
-| `heroku_account` | **HAS** | `heroku_team`           |
-| `heroku_account` | **HAS** | `heroku_account_member` |
-| `heroku_team`    | **HAS** | `heroku_account_member` |
+| From             | Edge     | To                      |
+| ---------------- | -------- | ----------------------- |
+| `heroku_account` | **HAS**  | `heroku_team`           |
+| `heroku_account` | **HAS**  | `heroku_account_member` |
+| `heroku_team`    | **HAS**  | `heroku_account_member` |
+| `heroku_team`    | **OWNS** | `heroku_application`    |

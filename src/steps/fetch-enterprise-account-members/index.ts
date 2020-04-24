@@ -14,8 +14,6 @@ import {
 export const STEP_ID = 'fetch-account-members';
 export const ACCOUNT_MEMBER_TYPE = 'heroku_account_member';
 
-// WARNING: Heroku labels this API as in DEVELOPMENT
-// https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
 const step: IntegrationStep = {
   id: STEP_ID,
   name: 'Fetch account members',
