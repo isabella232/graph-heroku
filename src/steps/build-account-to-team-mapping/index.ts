@@ -24,7 +24,7 @@ const step: IntegrationStep = {
     const accountIdMap = await createAccountIdMap(jobState);
 
     await jobState.iterateEntities({ _type: TEAM_TYPE }, async (team) => {
-      const account = accountIdMap.get(team.enterpriseAccountId as number);
+      const account = accountIdMap.get(team.enterpriseAccountId as string);
 
       if (account) {
         await jobState.addRelationships([
@@ -39,11 +39,11 @@ export default step;
 
 async function createAccountIdMap(
   jobState: JobState,
-): Promise<Map<number, Entity>> {
-  const accountIdMap = new Map<number, Entity>();
+): Promise<Map<string, Entity>> {
+  const accountIdMap = new Map<string, Entity>();
   await jobState.iterateEntities({ _type: ACCOUNT_TYPE }, (account) => {
     // unfortunately need to cast because of EntityPropertyValue type
-    accountIdMap.set(account.id as number, account);
+    accountIdMap.set(account.id as string, account);
   });
   return accountIdMap;
 }

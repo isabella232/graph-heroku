@@ -50,11 +50,11 @@ export default step;
 
 async function createUserIdMap(
   jobState: JobState,
-): Promise<Map<number, Entity>> {
-  const userIdMap = new Map<number, Entity>();
+): Promise<Map<string, Entity>> {
+  const userIdMap = new Map<string, Entity>();
   await jobState.iterateEntities({ _type: ACCOUNT_MEMBER_TYPE }, (user) => {
     // unfortunately need to cast because of EntityPropertyValue type
-    userIdMap.set(user.id as number, user);
+    userIdMap.set(user.id as string, user);
   });
   return userIdMap;
 }
