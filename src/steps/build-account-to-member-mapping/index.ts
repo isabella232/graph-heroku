@@ -30,7 +30,11 @@ const step: IntegrationStep = {
 
         if (account) {
           await jobState.addRelationships([
-            createAccountToMemberRelationship(account, member),
+            createIntegrationRelationship({
+              _class: 'HAS',
+              from: account,
+              to: member,
+            }),
           ]);
         }
       },
@@ -49,15 +53,4 @@ async function createAccountIdMap(
     accountIdMap.set(account.id as string, account);
   });
   return accountIdMap;
-}
-
-export function createAccountToMemberRelationship(
-  account: Entity,
-  member: Entity,
-): Relationship {
-  return createIntegrationRelationship({
-    _class: 'HAS',
-    from: account,
-    to: member,
-  });
 }

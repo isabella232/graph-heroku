@@ -2,7 +2,6 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   Entity,
-  Relationship,
   createIntegrationRelationship,
   JobState,
 } from '@jupiterone/integration-sdk';
@@ -38,7 +37,12 @@ const step: IntegrationStep = {
 
         if (user) {
           await jobState.addRelationships([
-            createTeamToMemberRelationship(team, user, teamMember.role),
+            createIntegrationRelationship({
+              _class: 'HAS',
+              from: team,
+              to: user,
+              properties: { role: teamMember.role },
+            }),
           ]);
         }
       }
@@ -57,17 +61,4 @@ async function createUserIdMap(
     userIdMap.set(user.id as string, user);
   });
   return userIdMap;
-}
-
-export function createTeamToMemberRelationship(
-  team: Entity,
-  user: Entity,
-  role: string,
-): Relationship {
-  return createIntegrationRelationship({
-    _class: 'HAS',
-    from: team,
-    to: user,
-    properties: { role },
-  });
 }
