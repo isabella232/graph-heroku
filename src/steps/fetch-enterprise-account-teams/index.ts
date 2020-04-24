@@ -14,8 +14,6 @@ import {
 export const TEAM_TYPE = 'heroku_team';
 export const STEP_ID = 'fetch-teams';
 
-// WARNING: Heroku labels this API as in DEVELOPMENT
-// https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
 const step: IntegrationStep = {
   id: STEP_ID,
   name: 'Fetch teams',

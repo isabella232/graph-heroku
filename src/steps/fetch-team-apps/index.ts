@@ -14,8 +14,6 @@ import {
 export const STEP_ID = 'fetch-team-apps';
 export const APPLICATION_TYPE = 'heroku_application';
 
-// WARNING: Heroku labels this API as in DEVELOPMENT
-// https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
 const step: IntegrationStep = {
   id: STEP_ID,
   name: 'Fetch team apps',

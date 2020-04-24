@@ -46,30 +46,55 @@ export class HerokuClient {
     });
   }
 
+  /**
+   * WARNING: Heroku labels this API as in DEVELOPMENT
+   * https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-list
+   *
+   */
   getEnterpriseAccounts(): Promise<HerokuEnterpriseAccount[]> {
     return this.retryGet('/enterprise-accounts');
   }
 
+  /**
+   * WARNING: Heroku labels this API as in DEVELOPMENT
+   * https://devcenter.heroku.com/articles/platform-api-reference#team-list-by-enterprise-account
+   */
   getEnterpriseAccountTeams(
     enterpriseAccountId: string,
   ): Promise<HerokuEnterpriseAccountTeam[]> {
     return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/teams`);
   }
 
+  /**
+   * WARNING: Heroku labels this API as in DEVELOPMENT
+   * https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
+   */
   getEnterpriseAccountMembers(
     enterpriseAccountId: string,
   ): Promise<HerokuEnterpriseAccountMember[]> {
     return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/members`);
   }
 
+  /**
+   * WARNING: Heroku labels this API as in DEVELOPMENT
+   * https://devcenter.heroku.com/articles/platform-api-reference#team-member-list
+   */
   getTeamMembers(teamId: string): Promise<HerokuTeamMember[]> {
     return this.retryGet(`/teams/${teamId}/members`);
   }
 
+  /**
+   * Heroku labels this API as in PRODUCTION
+   * https://devcenter.heroku.com/articles/platform-api-reference#account-info-by-user
+   */
   getUser(userId: string): Promise<HerokuUser[]> {
     return this.retryGet(`/users/${userId}`);
   }
 
+  /**
+   * WARNING: Heroku labels this API as in DEVELOPMENT
+   * https://devcenter.heroku.com/articles/platform-api-reference#team-app-list-by-team
+   */
   getTeamApps(teamId: string): Promise<HerokuTeamApp[]> {
     return this.retryGet(`/teams/${teamId}/apps`);
   }
