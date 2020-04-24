@@ -10,10 +10,13 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.1.0] - 2020-04-24
+
 ### Added
 
 - Added fetch-team-apps step
 - Added build-team-to-app-mapping step
+- Added gitleaks workflow
 
 ### Fixed
 
@@ -37,5 +40,6 @@ and this project adheres to
 - Added account, team, and user entities
 - Added account-> team relationship
 
-[unreleased]: https://github.com/JupiterOne/graph-heroku/compare/v0.0.1...HEAD
+[unreleased]: https://github.com/JupiterOne/graph-heroku/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/JupiterOne/graph-heroku/releases/tag/v0.1.0
 [0.0.1]: https://github.com/JupiterOne/graph-heroku/releases/tag/v0.0.1
