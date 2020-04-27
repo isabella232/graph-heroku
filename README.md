@@ -1,4 +1,5 @@
 # JupiterOne Integration
+
 ![](https://github.com/JupiterOne/graph-heroku/workflows/Build/badge.svg)
 ![](https://github.com/JupiterOne/graph-heroku/workflows/gitleaks/badge.svg)
 

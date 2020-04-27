@@ -2,10 +2,12 @@
 
 This integration uses the
 [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference).
-The root of its entity and relationship ingestion begins with a
-[Heroku Enterprise Account](https://devcenter.heroku.com/categories/enterprise-accounts) -
-therefore, this integration currently offers no functionality for personal or
-professional accounts.
+When running `j1-integration collect`, the root of the entity and relationship
+ingestion begins with a
+[Heroku Enterprise Account](https://devcenter.heroku.com/categories/enterprise-accounts).
+Therefore, while developing locally with a non-enterprise account, developers
+will only be able to test certain non-enterprise API endpoints (such as `/teams`
+or `/apps`).
 
 ## Prerequisites
 
