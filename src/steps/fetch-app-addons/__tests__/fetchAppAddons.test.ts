@@ -62,6 +62,7 @@ test('should convert addons to entities', () => {
     id: '2bb23a70-3da0-4a76-aa8e-31219fcc2b22',
     name: 'papertrail-solid-67022',
     updatedOn: 1586872683000,
+    applicationId: 'e3af0e11-ea32-475e-a36f-e20f48e83136',
   });
 });
 
