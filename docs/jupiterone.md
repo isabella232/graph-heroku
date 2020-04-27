@@ -2,9 +2,9 @@
 
 ## Setup
 
-Follow the steps in `docs/development.md` to create an API key and begin using
-the
-[Heroku Rest API](https://devcenter.heroku.com/articles/platform-api-reference)
+Users should configure the integration by providing an API key obtained from
+Heroku:
+<https://devcenter.heroku.com/articles/platform-api-quickstart#authentication>.
 
 ## Data Model
 
@@ -18,12 +18,14 @@ The following entity resources are ingested when the integration runs.
 | Team                | `heroku_team`           | `Team`                |
 | User                | `heroku_account_member` | `User`                |
 | Application         | `heroku_application`    | `Application`         |
+| Addon               | `heroku_addon`          | `Service`             |
 
 ### Relationships
 
-| From             | Edge     | To                      |
-| ---------------- | -------- | ----------------------- |
-| `heroku_account` | **HAS**  | `heroku_team`           |
-| `heroku_account` | **HAS**  | `heroku_account_member` |
-| `heroku_team`    | **HAS**  | `heroku_account_member` |
-| `heroku_team`    | **OWNS** | `heroku_application`    |
+| From                 | Edge     | To                      |
+| -------------------- | -------- | ----------------------- |
+| `heroku_account`     | **HAS**  | `heroku_team`           |
+| `heroku_account`     | **HAS**  | `heroku_account_member` |
+| `heroku_team`        | **HAS**  | `heroku_account_member` |
+| `heroku_team`        | **OWNS** | `heroku_application`    |
+| `heroku_application` | **HAS**  | `heroku_addon`          |

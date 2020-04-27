@@ -10,6 +10,12 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.2.0] - 2020-04-27
+
+### Added
+
+- Added fetch-app-addons and build-app-to-addon-mapping
+
 ## [0.1.0] - 2020-04-24
 
 ### Added

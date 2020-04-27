@@ -18,3 +18,5 @@ export type HerokuEnterpriseAccountMember = Opaque<
 export type HerokuTeamMember = Opaque<any, 'HerokuTeamMember'>;
 
 export type HerokuTeamApp = Opaque<any, 'HerokuTeamApp'>;
+
+export type HerokuAppAddon = Opaque<any, 'HerokuAppAddon'>;

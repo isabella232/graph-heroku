@@ -7,6 +7,7 @@ import {
   HerokuUser,
   HerokuTeamMember,
   HerokuTeamApp,
+  HerokuAppAddon,
 } from './types/herokuTypes';
 
 interface HerokuIntegrationConfig {
@@ -97,5 +98,13 @@ export class HerokuClient {
    */
   getTeamApps(teamId: string): Promise<HerokuTeamApp[]> {
     return this.retryGet(`/teams/${teamId}/apps`);
+  }
+
+  /**
+   * Heroku labels this API as in PRODUCTION
+   * https://devcenter.heroku.com/articles/platform-api-reference#add-on-list-by-app
+   */
+  getAppAddons(appid: string): Promise<HerokuAppAddon[]> {
+    return this.retryGet(`/apps/${appid}/addons`);
   }
 }
