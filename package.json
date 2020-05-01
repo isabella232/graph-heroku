@@ -1,8 +1,11 @@
 {
   "name": "@jupiterone/graph-heroku",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "JupiterOne graph converter for Heroku",
   "license": "MPL-2.0",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "j1-integration collect",
     "vis": "j1-integration visualize && open .j1-integration/graph/index.html",
@@ -12,10 +15,11 @@
     "test": "jest --passWithNoTests",
     "test:ci": "yarn lint && yarn type-check && yarn test",
     "prebuild": "yarn test:ci",
-    "build": "tsc -p tsconfig.dist.json --declaration"
+    "build": "tsc -p tsconfig.dist.json --declaration",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@jupiterone/integration-sdk": "^0.11.0",
+    "@jupiterone/integration-sdk": "^0.15.0",
     "@lifeomic/attempt": "^3.0.0",
     "heroku-client": "^3.1.0"
   },
