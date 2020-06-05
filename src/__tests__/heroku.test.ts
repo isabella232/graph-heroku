@@ -1,5 +1,5 @@
 import { handleError, HerokuClient } from '../heroku';
-import { setupRecording } from '@jupiterone/integration-sdk/testing';
+import { setupRecording } from '@jupiterone/integration-sdk-testing';
 
 describe('handleError', () => {
   test('should abort if statusCode is not retryable', async () => {

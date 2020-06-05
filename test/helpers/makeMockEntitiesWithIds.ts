@@ -1,4 +1,4 @@
-import { Entity } from '@jupiterone/integration-sdk';
+import { Entity } from '@jupiterone/integration-sdk-core';
 
 export function makeMockEntitiesWithIds(
   jobStateIds: { _type: string; id: string }[],

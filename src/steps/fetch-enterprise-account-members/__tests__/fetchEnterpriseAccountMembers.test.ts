@@ -3,11 +3,12 @@ import {
   createMockStepExecutionContext,
   setupRecording,
   Recording,
-} from '@jupiterone/integration-sdk/testing';
+} from '@jupiterone/integration-sdk-testing';
 import fetchEnterpriseAccountMembers, { createAccountMemberEntity } from '..';
 import { HerokuClient } from '../../../heroku';
 
 import entities from './__fixtures__/entities.json';
+import { HerokuIntegrationConfig } from '../../../types';
 
 let recording: Recording;
 
@@ -51,7 +52,10 @@ test('should fetch members', async () => {
     },
   });
 
-  const context = createMockStepExecutionContext({ entities });
+  const context = createMockStepExecutionContext({
+    entities,
+    instanceConfig: {} as HerokuIntegrationConfig,
+  });
   const heroku = new HerokuClient(context.instance.config);
   const results = await heroku.getEnterpriseAccountMembers(entities[0].id);
 
@@ -84,7 +88,10 @@ test('should collect data during step', async () => {
     },
   });
 
-  const context = createMockStepExecutionContext({ entities });
+  const context = createMockStepExecutionContext({
+    entities,
+    instanceConfig: {} as HerokuIntegrationConfig,
+  });
   await fetchEnterpriseAccountMembers.executionHandler(context);
 
   expect(context.jobState.collectedEntities).toHaveLength(1);

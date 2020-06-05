@@ -24,11 +24,13 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@jupiterone/integration-sdk": "^1.0.0",
     "@lifeomic/attempt": "^3.0.0",
     "heroku-client": "^3.1.0"
   },
   "devDependencies": {
+    "@jupiterone/integration-sdk-cli": "^1.1.0",
+    "@jupiterone/integration-sdk-core": "^1.1.0",
+    "@jupiterone/integration-sdk-testing": "^1.1.0",
     "@pollyjs/adapter-node-http": "^4.0.4",
     "@pollyjs/core": "^4.0.4",
     "@types/jest": "^25.2.1",
@@ -48,5 +50,8 @@
     "type-fest": "^0.13.1",
     "typescript": "^3.8.3",
     "uuid": "^7.0.3"
+  },
+  "peerDependencies": {
+    "@jupiterone/integration-sdk-core": "^1.1.0"
   }
 }

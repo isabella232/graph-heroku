@@ -4,13 +4,14 @@ import {
   createIntegrationEntity,
   Entity,
   getTime,
-} from '@jupiterone/integration-sdk';
+} from '@jupiterone/integration-sdk-core';
 import { HerokuClient } from '../../heroku';
 
 import {
   STEP_ID as APPLICATION_STEP,
   APPLICATION_TYPE,
 } from '../fetch-team-apps';
+import { HerokuIntegrationConfig } from '../../types';
 
 export const STEP_ID = 'fetch-app-addons';
 export const ADDON_TYPE = 'heroku_addon';
@@ -24,7 +25,7 @@ const step: IntegrationStep = {
     logger,
     instance,
     jobState,
-  }: IntegrationStepExecutionContext) {
+  }: IntegrationStepExecutionContext<HerokuIntegrationConfig>) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /apps/:id/addons API...');

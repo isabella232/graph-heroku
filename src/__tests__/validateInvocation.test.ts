@@ -3,9 +3,10 @@ import {
   createMockExecutionContext,
   Recording,
   setupRecording,
-} from '@jupiterone/integration-sdk/testing';
+} from '@jupiterone/integration-sdk-testing';
+import { HerokuIntegrationConfig } from '../types';
 
-const context = createMockExecutionContext();
+const context = createMockExecutionContext<HerokuIntegrationConfig>();
 
 let recording: Recording;
 

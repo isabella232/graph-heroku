@@ -3,9 +3,10 @@ import {
   createMockStepExecutionContext,
   setupRecording,
   Recording,
-} from '@jupiterone/integration-sdk/testing';
+} from '@jupiterone/integration-sdk-testing';
 import fetchEnterpriseAccount, { createAccountEntity } from '..';
 import { HerokuClient } from '../../../heroku';
+import { HerokuIntegrationConfig } from '../../../types';
 
 let recording: Recording;
 
@@ -41,7 +42,7 @@ test('should fetch accounts', async () => {
     },
   });
 
-  const context = createMockStepExecutionContext();
+  const context = createMockStepExecutionContext<HerokuIntegrationConfig>();
   const heroku = new HerokuClient(context.instance.config);
   const results = await heroku.getEnterpriseAccounts();
 

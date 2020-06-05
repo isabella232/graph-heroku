@@ -4,8 +4,9 @@ import {
   createIntegrationEntity,
   Entity,
   getTime,
-} from '@jupiterone/integration-sdk';
+} from '@jupiterone/integration-sdk-core';
 import { HerokuClient } from '../../heroku';
+import { HerokuIntegrationConfig } from '../../types';
 
 export const STEP_ID = 'fetch-enterprise-accounts';
 export const ACCOUNT_TYPE = 'heroku_account';
@@ -18,7 +19,7 @@ const step: IntegrationStep = {
     logger,
     instance,
     jobState,
-  }: IntegrationStepExecutionContext) {
+  }: IntegrationStepExecutionContext<HerokuIntegrationConfig>) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /enterprise-accounts API...');
