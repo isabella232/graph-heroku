@@ -71,7 +71,7 @@ test('should collect data during step', async () => {
     redactedRequestHeaders: ['authorization'],
   });
 
-  const context = createMockStepExecutionContext();
+  const context = createMockStepExecutionContext<HerokuIntegrationConfig>();
   await fetchEnterpriseAccount.executionHandler(context);
 
   expect(context.jobState.collectedEntities).toHaveLength(1);

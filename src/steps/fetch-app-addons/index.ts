@@ -1,6 +1,5 @@
 import {
   IntegrationStep,
-  IntegrationStepExecutionContext,
   createIntegrationEntity,
   Entity,
   getTime,
@@ -16,7 +15,7 @@ import { HerokuIntegrationConfig } from '../../types';
 export const STEP_ID = 'fetch-app-addons';
 export const ADDON_TYPE = 'heroku_addon';
 
-const step: IntegrationStep = {
+const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch app addons',
   types: [ADDON_TYPE],
@@ -25,7 +24,7 @@ const step: IntegrationStep = {
     logger,
     instance,
     jobState,
-  }: IntegrationStepExecutionContext<HerokuIntegrationConfig>) {
+  }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /apps/:id/addons API...');

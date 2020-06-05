@@ -1,6 +1,5 @@
 import {
   IntegrationStep,
-  IntegrationStepExecutionContext,
   createIntegrationEntity,
   Entity,
   getTime,
@@ -11,7 +10,7 @@ import { HerokuIntegrationConfig } from '../../types';
 export const STEP_ID = 'fetch-enterprise-accounts';
 export const ACCOUNT_TYPE = 'heroku_account';
 
-const step: IntegrationStep = {
+const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch Enterprise Accounts',
   types: [ACCOUNT_TYPE],
@@ -19,7 +18,7 @@ const step: IntegrationStep = {
     logger,
     instance,
     jobState,
-  }: IntegrationStepExecutionContext<HerokuIntegrationConfig>) {
+  }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /enterprise-accounts API...');

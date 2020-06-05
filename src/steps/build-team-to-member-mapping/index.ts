@@ -1,6 +1,5 @@
 import {
   IntegrationStep,
-  IntegrationStepExecutionContext,
   Entity,
   createIntegrationRelationship,
   JobState,
@@ -16,7 +15,7 @@ import {
 import { HerokuClient } from '../../heroku';
 import { HerokuIntegrationConfig } from '../../types';
 
-const step: IntegrationStep = {
+const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: 'build-account-to-member-relationships',
   name: 'Build Account-to-Member Relationships',
   types: [],
@@ -24,7 +23,7 @@ const step: IntegrationStep = {
   async executionHandler({
     instance,
     jobState,
-  }: IntegrationStepExecutionContext<HerokuIntegrationConfig>) {
+  }) {
     const heroku = new HerokuClient(instance.config);
 
     const userIdMap = await createUserIdMap(jobState);
