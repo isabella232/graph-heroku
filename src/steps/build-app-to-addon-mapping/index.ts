@@ -4,7 +4,7 @@ import {
   Entity,
   createIntegrationRelationship,
   JobState,
-} from '@jupiterone/integration-sdk';
+} from '@jupiterone/integration-sdk-core';
 import {
   STEP_ID as APPLICATION_STEP,
   APPLICATION_TYPE,

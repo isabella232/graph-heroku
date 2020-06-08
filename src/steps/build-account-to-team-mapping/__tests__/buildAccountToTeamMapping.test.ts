@@ -1,11 +1,15 @@
-import { createMockStepExecutionContext } from '@jupiterone/integration-sdk/testing';
+import { createMockStepExecutionContext } from '@jupiterone/integration-sdk-testing';
 
 import step from '..';
 
 import entities from './__fixtures__/entities.json';
+import { HerokuIntegrationConfig } from '../../../types';
 
 test('should create account-team relationship', async () => {
-  const context = createMockStepExecutionContext({ entities });
+  const context = createMockStepExecutionContext({
+    entities,
+    instanceConfig: {} as HerokuIntegrationConfig,
+  });
   await step.executionHandler(context);
 
   expect(context.jobState.collectedEntities).toHaveLength(0);

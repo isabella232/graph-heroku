@@ -1,10 +1,9 @@
 import {
   IntegrationStep,
-  IntegrationStepExecutionContext,
   Entity,
   createIntegrationRelationship,
   JobState,
-} from '@jupiterone/integration-sdk';
+} from '@jupiterone/integration-sdk-core';
 import {
   STEP_ID as MEMBER_STEP,
   ACCOUNT_MEMBER_TYPE,
@@ -14,8 +13,9 @@ import {
   TEAM_TYPE,
 } from '../fetch-enterprise-account-teams';
 import { HerokuClient } from '../../heroku';
+import { HerokuIntegrationConfig } from '../../types';
 
-const step: IntegrationStep = {
+const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: 'build-account-to-member-relationships',
   name: 'Build Account-to-Member Relationships',
   types: [],
@@ -23,7 +23,7 @@ const step: IntegrationStep = {
   async executionHandler({
     instance,
     jobState,
-  }: IntegrationStepExecutionContext) {
+  }) {
     const heroku = new HerokuClient(instance.config);
 
     const userIdMap = await createUserIdMap(jobState);

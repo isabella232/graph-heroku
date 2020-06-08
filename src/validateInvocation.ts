@@ -1,8 +1,9 @@
-import { IntegrationExecutionContext } from '@jupiterone/integration-sdk';
+import { IntegrationExecutionContext } from '@jupiterone/integration-sdk-core';
 import { HerokuClient } from './heroku';
+import { HerokuIntegrationConfig } from './types';
 
 export default async function validateInvocation(
-  context: IntegrationExecutionContext,
+  context: IntegrationExecutionContext<HerokuIntegrationConfig>,
 ): Promise<void> {
   context.logger.info(
     {
@@ -19,7 +20,7 @@ export default async function validateInvocation(
 }
 
 async function isConfigurationValid(
-  context: IntegrationExecutionContext,
+  context: IntegrationExecutionContext<HerokuIntegrationConfig>,
 ): Promise<boolean> {
   const heroku = new HerokuClient(context.instance.config);
 

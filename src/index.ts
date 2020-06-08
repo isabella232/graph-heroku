@@ -1,4 +1,4 @@
-import { IntegrationInvocationConfig } from '@jupiterone/integration-sdk';
+import { IntegrationInvocationConfig } from '@jupiterone/integration-sdk-core';
 
 import instanceConfigFields from './instanceConfigFields';
 import validateInvocation from './validateInvocation';
@@ -13,8 +13,9 @@ import fetchEnterpriseAccountMembers from './steps/fetch-enterprise-account-memb
 import fetchEnterpriseAccountTeams from './steps/fetch-enterprise-account-teams';
 import fetchEnterpriseAccounts from './steps/fetch-enterprise-accounts';
 import fetchTeamApps from './steps/fetch-team-apps';
+import { HerokuIntegrationConfig } from './types';
 
-export const invocationConfig: IntegrationInvocationConfig = {
+export const invocationConfig: IntegrationInvocationConfig<HerokuIntegrationConfig> = {
   instanceConfigFields,
   validateInvocation,
   integrationSteps: [

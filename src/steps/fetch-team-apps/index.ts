@@ -1,20 +1,20 @@
 import {
   IntegrationStep,
-  IntegrationStepExecutionContext,
   createIntegrationEntity,
   Entity,
   getTime,
-} from '@jupiterone/integration-sdk';
+} from '@jupiterone/integration-sdk-core';
 import { HerokuClient } from '../../heroku';
 import {
   STEP_ID as TEAM_STEP,
   TEAM_TYPE,
 } from '../fetch-enterprise-account-teams';
+import { HerokuIntegrationConfig } from '../../types';
 
 export const STEP_ID = 'fetch-team-apps';
 export const APPLICATION_TYPE = 'heroku_application';
 
-const step: IntegrationStep = {
+const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch team apps',
   types: [APPLICATION_TYPE],
@@ -23,7 +23,7 @@ const step: IntegrationStep = {
     logger,
     instance,
     jobState,
-  }: IntegrationStepExecutionContext) {
+  }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /teams/:id/apps API...');
