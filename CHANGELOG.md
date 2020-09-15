@@ -10,6 +10,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Added note to published doc that Heroku Enterprise is required
+
 ## [0.2.0] - 2020-04-27
 
 ### Added
