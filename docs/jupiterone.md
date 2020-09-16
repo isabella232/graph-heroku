@@ -2,9 +2,10 @@
 
 ## Setup
 
-Users should configure the integration by providing an API key obtained from
-Heroku:
+Users configure the integration by providing an API key obtained from Heroku:
 <https://devcenter.heroku.com/articles/platform-api-quickstart#authentication>.
+
+**Please Note**: the integration currently requires a Heroku Enterprise account.
 
 ## Data Model
 
