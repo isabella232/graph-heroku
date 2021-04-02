@@ -1,5 +1,22 @@
 # Integration with JupiterOne
 
+## Heroku + JupiterOne Integration Benefits
+
+- Visualize Heroku teams, users, applications, and services in the JupiterOne graph.
+- Map Heroku users to employees in your JupiterOne account.
+- Monitor changes to your teams, users, applications, and services using JupiterOne alerts.
+
+## How it Works
+
+- JupiterOne periodically fetches Heroku teams, users, applications, and services to update the graph.
+- Write JupiterOne queries to review and monitor updates to the graph.
+- Configure alerts to take action when the JupiterOne graph changes.
+
+## Requirements
+
+- JupiterOne requires an API key configured for read access in your Heroku account. 
+- You must have permission in JupiterOne to install new integrations.
+
 ## Setup
 
 Users configure the integration by providing an API key obtained from Heroku:
