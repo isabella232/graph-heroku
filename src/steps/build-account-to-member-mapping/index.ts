@@ -2,8 +2,9 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   Entity,
-  createIntegrationRelationship,
+  createDirectRelationship,
   JobState,
+  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import {
   STEP_ID as MEMBER_STEP,
@@ -17,7 +18,15 @@ import {
 const step: IntegrationStep = {
   id: 'build-account-to-member-relationships',
   name: 'Build Account-to-Member Relationships',
-  types: [],
+  entities: [],
+  relationships: [
+    {
+      _type: 'heroku_account_has_member',
+      sourceType: ACCOUNT_TYPE,
+      _class: RelationshipClass.HAS,
+      targetType: ACCOUNT_MEMBER_TYPE,
+    },
+  ],
   dependsOn: [ACCOUNT_STEP, MEMBER_STEP],
   async executionHandler({ jobState }: IntegrationStepExecutionContext) {
     const accountIdMap = await createAccountIdMap(jobState);
@@ -29,8 +38,8 @@ const step: IntegrationStep = {
 
         if (account) {
           await jobState.addRelationships([
-            createIntegrationRelationship({
-              _class: 'HAS',
+            createDirectRelationship({
+              _class: RelationshipClass.HAS,
               from: account,
               to: member,
             }),

@@ -2,8 +2,9 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   Entity,
-  createIntegrationRelationship,
+  createDirectRelationship,
   JobState,
+  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import {
   STEP_ID as TEAM_STEP,
@@ -17,7 +18,15 @@ import {
 const step: IntegrationStep = {
   id: 'build-team-to-application-relationships',
   name: 'Build Team-to-Application Relationships',
-  types: [],
+  entities: [],
+  relationships: [
+    {
+      _type: 'heroku_team_owns_application',
+      sourceType: TEAM_TYPE,
+      _class: RelationshipClass.OWNS,
+      targetType: APPLICATION_TYPE,
+    },
+  ],
   dependsOn: [APPLICATION_STEP, TEAM_STEP],
   async executionHandler({ jobState }: IntegrationStepExecutionContext) {
     const teamIdMap = await createTeamIdMap(jobState);
@@ -29,8 +38,8 @@ const step: IntegrationStep = {
 
         if (team) {
           await jobState.addRelationships([
-            createIntegrationRelationship({
-              _class: 'OWNS',
+            createDirectRelationship({
+              _class: RelationshipClass.OWNS,
               from: team,
               to: application,
             }),

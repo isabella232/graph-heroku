@@ -17,13 +17,16 @@ export const ACCOUNT_MEMBER_TYPE = 'heroku_account_member';
 const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch account members',
-  types: [ACCOUNT_MEMBER_TYPE],
+  entities: [
+    {
+      resourceName: 'User',
+      _type: ACCOUNT_MEMBER_TYPE,
+      _class: 'User',
+    },
+  ],
+  relationships: [],
   dependsOn: [ACCOUNT_STEP],
-  async executionHandler({
-    logger,
-    instance,
-    jobState,
-  }) {
+  async executionHandler({ logger, instance, jobState }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /enterprise-accounts/:id/members API...');

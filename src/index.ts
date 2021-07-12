@@ -1,6 +1,5 @@
 import { IntegrationInvocationConfig } from '@jupiterone/integration-sdk-core';
 
-import instanceConfigFields from './instanceConfigFields';
 import validateInvocation from './validateInvocation';
 
 import buildAccountToMemberMapping from './steps/build-account-to-member-mapping';
@@ -16,7 +15,12 @@ import fetchTeamApps from './steps/fetch-team-apps';
 import { HerokuIntegrationConfig } from './types';
 
 export const invocationConfig: IntegrationInvocationConfig<HerokuIntegrationConfig> = {
-  instanceConfigFields,
+  instanceConfigFields: {
+    apiKey: {
+      type: 'string',
+      mask: true,
+    },
+  },
   validateInvocation,
   integrationSteps: [
     buildAccountToMemberMapping,

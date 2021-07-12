@@ -17,13 +17,16 @@ export const STEP_ID = 'fetch-teams';
 const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch teams',
-  types: [TEAM_TYPE],
+  entities: [
+    {
+      resourceName: 'Team',
+      _type: TEAM_TYPE,
+      _class: 'Team',
+    },
+  ],
+  relationships: [],
   dependsOn: [ACCOUNT_STEP],
-  async executionHandler({
-    logger,
-    instance,
-    jobState,
-  }) {
+  async executionHandler({ logger, instance, jobState }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /enterprise-accounts/:id/teams API...');
