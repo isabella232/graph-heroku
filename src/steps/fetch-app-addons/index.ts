@@ -18,13 +18,16 @@ export const ADDON_TYPE = 'heroku_addon';
 const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch app addons',
-  types: [ADDON_TYPE],
+  entities: [
+    {
+      resourceName: 'Addon',
+      _type: ADDON_TYPE,
+      _class: 'Service',
+    },
+  ],
+  relationships: [],
   dependsOn: [APPLICATION_STEP],
-  async executionHandler({
-    logger,
-    instance,
-    jobState,
-  }) {
+  async executionHandler({ logger, instance, jobState }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /apps/:id/addons API...');

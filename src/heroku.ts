@@ -38,7 +38,7 @@ export class HerokuClient {
     });
   }
 
-  retryGet(route: string): Promise<object[]> {
+  retryGet(route: string): Promise<any[]> {
     return retry(async () => this.heroku.get(route), {
       handleError,
       delay: Math.ceil(SECONDS_PER_API_REQUEST),

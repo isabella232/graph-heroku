@@ -17,13 +17,16 @@ export const APPLICATION_TYPE = 'heroku_application';
 const step: IntegrationStep<HerokuIntegrationConfig> = {
   id: STEP_ID,
   name: 'Fetch team apps',
-  types: [APPLICATION_TYPE],
+  entities: [
+    {
+      resourceName: 'Application',
+      _type: APPLICATION_TYPE,
+      _class: 'Application',
+    },
+  ],
+  relationships: [],
   dependsOn: [TEAM_STEP],
-  async executionHandler({
-    logger,
-    instance,
-    jobState,
-  }) {
+  async executionHandler({ logger, instance, jobState }) {
     const heroku = new HerokuClient(instance.config);
 
     logger.info('Calling /teams/:id/apps API...');

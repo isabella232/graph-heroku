@@ -7,8 +7,8 @@ declare module 'heroku-client' {
     auth?: string;
     token?: string;
     rejectUnauthorized?: string;
-    body?: object;
-    headers?: object;
+    body?: any;
+    headers?: any;
     json?: boolean;
     timeout?: number; // timeout in ms
   }
@@ -24,8 +24,8 @@ declare module 'heroku-client' {
     get(
       route: string,
       herokuRequestOptions?: HerokuRequestOptions,
-    ): Promise<object[]>;
+    ): Promise<any[]>;
 
-    request(herokuRequestObject: HerokuRequestObject): Promise<object>;
+    request(herokuRequestObject: HerokuRequestObject): Promise<any>;
   }
 }

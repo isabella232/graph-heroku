@@ -2,8 +2,9 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   Entity,
-  createIntegrationRelationship,
+  createDirectRelationship,
   JobState,
+  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import {
   STEP_ID as APPLICATION_STEP,
@@ -14,7 +15,15 @@ import { STEP_ID as ADDON_STEP, ADDON_TYPE } from '../fetch-app-addons';
 const step: IntegrationStep = {
   id: 'build-application-to-addon-relationships',
   name: 'Build Application-to-Addon Relationships',
-  types: [],
+  entities: [],
+  relationships: [
+    {
+      _type: 'heroku_application_has_addon',
+      sourceType: APPLICATION_TYPE,
+      _class: RelationshipClass.HAS,
+      targetType: ADDON_TYPE,
+    },
+  ],
   dependsOn: [ADDON_STEP, APPLICATION_STEP],
   async executionHandler({ jobState }: IntegrationStepExecutionContext) {
     const appIdMap = await createAppIdMap(jobState);
@@ -24,8 +33,8 @@ const step: IntegrationStep = {
 
       if (application) {
         await jobState.addRelationships([
-          createIntegrationRelationship({
-            _class: 'HAS',
+          createDirectRelationship({
+            _class: RelationshipClass.HAS,
             from: application,
             to: addon,
           }),
