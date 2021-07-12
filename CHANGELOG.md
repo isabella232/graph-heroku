@@ -10,6 +10,12 @@ and this project adheres to
 
 ## [Unreleased]
 
+## 2.2.0 - 2021-07-12
+
+### Changed
+
+- Upgraded `@jupiterone/integration-sdk-*@6.10.0`
+
 ### Changed
 
 - Added note to published doc that Heroku Enterprise is required
