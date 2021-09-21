@@ -36,6 +36,13 @@ const step: IntegrationStep<HerokuIntegrationConfig> = {
       async (application) => {
         const addons = await heroku.getAppAddons(application.id as string);
 
+        logger.info(
+          {
+            numAddons: addons.length,
+          },
+          'Successfully fetched addons',
+        );
+
         await jobState.addEntities(
           addons.map((addon) => createAddonEntity(addon, application.id)),
         );

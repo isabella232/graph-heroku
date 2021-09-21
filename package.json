@@ -1,6 +1,6 @@
 {
   "name": "@jupiterone/graph-heroku",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "JupiterOne graph converter for Heroku",
   "license": "MPL-2.0",
   "main": "dist/index.js",
@@ -29,15 +29,15 @@
     "heroku-client": "^3.1.0"
   },
   "devDependencies": {
-    "@jupiterone/integration-sdk-core": "^6.10.0",
-    "@jupiterone/integration-sdk-dev-tools": "^6.10.0",
-    "@jupiterone/integration-sdk-testing": "^6.10.0",
-    "@types/node": "^13.11.1",
+    "@jupiterone/integration-sdk-core": "^6.19.0",
+    "@jupiterone/integration-sdk-dev-tools": "^6.19.0",
+    "@jupiterone/integration-sdk-testing": "^6.19.0",
+    "@types/node": "^14",
     "husky": "^4.2.5",
-    "type-fest": "^0.13.1",
-    "uuid": "^7.0.3"
+    "type-fest": "^2.3.4",
+    "uuid": "^8.3.2"
   },
   "peerDependencies": {
-    "@jupiterone/integration-sdk-core": "^6.10.0"
+    "@jupiterone/integration-sdk-core": "^6.19.0"
   }
 }
