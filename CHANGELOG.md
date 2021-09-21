@@ -10,6 +10,11 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade dependencies
+- Additional logging in `fetch-app-addons` step
+
 ## 2.2.0 - 2021-07-12
 
 ### Changed
