@@ -10,6 +10,12 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Improved OAuth authorization error handling. The integration will now report
+  proper error messaging when Heroku responds to HTTP status codes that indicate
+  an error occurred.
+
 ## 2.3.0 - 2021-09-21
 
 ### Changed

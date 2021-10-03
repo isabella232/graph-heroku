@@ -33,7 +33,16 @@ If you need help with this integration, please contact
 Users configure the integration by providing an API key obtained from Heroku:
 <https://devcenter.heroku.com/articles/platform-api-quickstart#authentication>.
 
-**Please Note**: the integration currently requires a Heroku Enterprise account.
+**Please Note**: The integration currently requires a Heroku Enterprise account
+and the following OAuth scopes:
+
+- `identity`
+- `read`
+
+Optional OAuth scopes:
+
+- `global`
+  - Allows for fetching members of a Heroku team
 
 ### In JupiterOne
 

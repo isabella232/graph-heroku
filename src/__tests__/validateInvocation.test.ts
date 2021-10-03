@@ -34,7 +34,7 @@ describe('validateInvocation', () => {
     });
 
     await expect(validateInvocation(context)).rejects.toThrow(
-      'Failed to authenticate with provided credentials',
+      'Provider API failed at https://api.heroku.com/account: 401 Invalid credentials provided.',
     );
   });
 });

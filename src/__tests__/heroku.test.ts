@@ -1,47 +1,55 @@
-import { handleError, HerokuClient } from '../heroku';
+import { createRequestError, HerokuClient, routeToEndpoint } from '../heroku';
 import { setupRecording } from '@jupiterone/integration-sdk-testing';
+import {
+  IntegrationProviderAPIError,
+  IntegrationProviderAuthorizationError,
+} from '@jupiterone/integration-sdk-core';
+import { HerokuClientError } from '../types';
 
-describe('handleError', () => {
-  test('should abort if statusCode is not retryable', async () => {
-    const abortFunc = jest.fn();
-    const attemptContext = {
-      abort: abortFunc,
+describe('#createRequestError', () => {
+  test('should return IntegrationProviderAuthorizationError if 403', async () => {
+    const originalError = new Error('mock error');
+    const endpoint = routeToEndpoint('/enterprise-accounts');
+
+    const herokuClientError: HerokuClientError = {
+      statusCode: 403,
+      body: {
+        id: 'forbidden',
+        message:
+          'The scope of this OAuth authorization does not allow access to this resource.',
+      },
     };
 
-    const err = {
-      statusCode: 401,
-    };
-
-    handleError(err, attemptContext);
-    expect(abortFunc).toHaveBeenCalledTimes(1);
+    expect(createRequestError(endpoint, herokuClientError)).toEqual(
+      new IntegrationProviderAuthorizationError({
+        cause: originalError,
+        endpoint,
+        status: herokuClientError.statusCode,
+        statusText: herokuClientError.body.message,
+      }),
+    );
   });
 
-  test('should do nothing if error is not nonRetryable', async () => {
-    const abortFunc = jest.fn();
-    const attemptContext = {
-      abort: abortFunc,
-    };
+  test('should return IntegrationProviderAPIError if non-403', async () => {
+    const endpoint = routeToEndpoint('/enterprise-accounts');
 
-    const err = {
+    const herokuClientError: HerokuClientError = {
       statusCode: 500,
+      body: {
+        id: 'some-server-error',
+        message: 'some server error',
+      },
     };
 
-    handleError(err, attemptContext);
-    expect(abortFunc).not.toHaveBeenCalled();
-  });
-
-  test('should do nothing if error has no statusCode', async () => {
-    const abortFunc = jest.fn();
-    const attemptContext = {
-      abort: abortFunc,
-    };
-
-    const err = {
-      property: 'property',
-    };
-
-    handleError(err, attemptContext);
-    expect(abortFunc).not.toHaveBeenCalled();
+    expect(createRequestError(endpoint, herokuClientError)).toEqual(
+      new IntegrationProviderAPIError({
+        code: 'UNKNOWN_HEROKU_API_ERROR',
+        endpoint,
+        status: herokuClientError.statusCode,
+        statusText: herokuClientError.body.message,
+        fatal: false,
+      }),
+    );
   });
 });
 
@@ -56,7 +64,7 @@ describe('heroku.retryGet', () => {
       redactedRequestHeaders: ['authorization'],
     });
 
-    const response = await heroku.retryGet(retryRoute);
+    const response = await heroku.request(retryRoute);
     expect(response).toMatchObject({ name: 'Nick Dowmon' });
     recording.stop();
   });
@@ -71,8 +79,8 @@ describe('heroku.retryGet', () => {
       redactedRequestHeaders: ['authorization'],
     });
 
-    await expect(heroku.retryGet(retryRoute)).rejects.toThrow(
-      'Expected response to be successful, got 401',
+    await expect(heroku.request(retryRoute)).rejects.toThrow(
+      'Provider API failed at https://api.heroku.com/account: 401 Invalid credentials provided.',
     );
     recording.stop();
   });
