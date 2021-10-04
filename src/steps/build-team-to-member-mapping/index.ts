@@ -34,54 +34,64 @@ const step: IntegrationStep<HerokuIntegrationConfig> = {
 
     const heroku = new HerokuClient(instance.config);
     const userIdMap = await createUserIdMap(jobState);
+    const teamEntities = await collectTeamEntities(jobState);
 
-    await jobState.iterateEntities(
+    logger.info(
       {
-        _type: TEAM_TYPE,
+        numTeamEntities: teamEntities.length,
       },
-      async (teamEntity) => {
-        logger.info(
-          {
-            teamName: teamEntity.name,
-            teamId: teamEntity.id,
-          },
-          'Attempting to fetch team members for team',
+      'Total teams to fetch members for',
+    );
+
+    for (const teamEntity of teamEntities) {
+      try {
+        const teamMembers = await heroku.getTeamMembers(
+          teamEntity.id as string,
         );
 
-        try {
-          const teamMembers = await heroku.getTeamMembers(
-            teamEntity.id as string,
-          );
+        logger.info(
+          {
+            numTeamMembers: teamMembers.length,
+          },
+          'Successfully fetched team members',
+        );
 
-          logger.info(
-            {
-              numTeamMembers: teamMembers.length,
-            },
-            'Successfully fetched team members',
-          );
-
-          await createTeamHasUserRelationships({
-            userIdMap,
-            teamMembers,
-            teamEntity: teamEntity,
-            jobState,
+        await createTeamHasUserRelationships({
+          userIdMap,
+          teamMembers,
+          teamEntity: teamEntity,
+          jobState,
+        });
+      } catch (err) {
+        if (err.code === 'PROVIDER_AUTHORIZATION_ERROR') {
+          logger.publishEvent({
+            name: 'missing_scope',
+            description: `Could not fetch team members. Missing required OAuth scope (endpoint=${err.endpoint}, scope=global)`,
           });
-        } catch (err) {
-          if (err.code === 'PROVIDER_AUTHORIZATION_ERROR') {
-            logger.publishEvent({
-              name: 'missing_scope',
-              description: `Could not fetch team members. Missing required OAuth scope (endpoint=${err.endpoint}, scope=global)`,
-            });
 
-            return;
-          }
-
-          throw err;
+          return;
         }
-      },
-    );
+
+        throw err;
+      }
+    }
   },
 };
+
+async function collectTeamEntities(jobState: JobState): Promise<Entity[]> {
+  const teamEntities: Entity[] = [];
+
+  await jobState.iterateEntities(
+    {
+      _type: TEAM_TYPE,
+    },
+    async (teamEntity) => {
+      teamEntities.push(teamEntity);
+    },
+  );
+
+  return teamEntities;
+}
 
 async function createTeamHasUserRelationships({
   userIdMap,
