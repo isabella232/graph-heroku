@@ -29,34 +29,99 @@ const step: IntegrationStep<HerokuIntegrationConfig> = {
     },
   ],
   dependsOn: [TEAM_STEP, MEMBER_STEP],
-  async executionHandler({ instance, jobState }) {
+  async executionHandler(context) {
+    const { instance, jobState, logger } = context;
+
     const heroku = new HerokuClient(instance.config);
-
     const userIdMap = await createUserIdMap(jobState);
+    const teamEntities = await collectTeamEntities(jobState);
 
-    await jobState.iterateEntities({ _type: TEAM_TYPE }, async (team) => {
-      const teamMembers = await heroku.getTeamMembers(team.id as string);
+    logger.info(
+      {
+        numTeamEntities: teamEntities.length,
+      },
+      'Total teams to fetch members for',
+    );
 
-      for (const teamMember of teamMembers) {
-        const userId = teamMember.user ? teamMember.user.id : null;
-        const user = userIdMap.get(userId);
+    for (const teamEntity of teamEntities) {
+      try {
+        const teamMembers = await heroku.getTeamMembers(
+          teamEntity.id as string,
+        );
 
-        if (user) {
-          await jobState.addRelationships([
-            createDirectRelationship({
-              _class: RelationshipClass.HAS,
-              from: team,
-              to: user,
-              properties: { role: teamMember.role },
-            }),
-          ]);
+        logger.info(
+          {
+            numTeamMembers: teamMembers.length,
+          },
+          'Successfully fetched team members',
+        );
+
+        await createTeamHasUserRelationships({
+          userIdMap,
+          teamMembers,
+          teamEntity: teamEntity,
+          jobState,
+        });
+      } catch (err) {
+        if (err.code === 'PROVIDER_AUTHORIZATION_ERROR') {
+          logger.publishEvent({
+            name: 'missing_scope',
+            description: `Could not fetch team members. Missing required OAuth scope (endpoint=${err.endpoint}, scope=global)`,
+          });
+
+          return;
         }
+
+        throw err;
       }
-    });
+    }
   },
 };
 
-export default step;
+async function collectTeamEntities(jobState: JobState): Promise<Entity[]> {
+  const teamEntities: Entity[] = [];
+
+  await jobState.iterateEntities(
+    {
+      _type: TEAM_TYPE,
+    },
+    async (teamEntity) => {
+      teamEntities.push(teamEntity);
+    },
+  );
+
+  return teamEntities;
+}
+
+async function createTeamHasUserRelationships({
+  userIdMap,
+  teamMembers,
+  teamEntity,
+  jobState,
+}: {
+  userIdMap: Map<string, Entity>;
+  teamMembers: any[];
+  teamEntity: Entity;
+  jobState: JobState;
+}) {
+  for (const teamMember of teamMembers) {
+    const userId = teamMember.user ? teamMember.user.id : null;
+    const userEntity = userIdMap.get(userId);
+
+    if (!userEntity) {
+      return;
+    }
+
+    await jobState.addRelationship(
+      createDirectRelationship({
+        _class: RelationshipClass.HAS,
+        from: teamEntity,
+        to: userEntity,
+        properties: { role: teamMember.role },
+      }),
+    );
+  }
+}
 
 async function createUserIdMap(
   jobState: JobState,
@@ -68,3 +133,5 @@ async function createUserIdMap(
   });
   return userIdMap;
 }
+
+export default step;

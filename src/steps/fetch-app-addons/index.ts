@@ -67,6 +67,7 @@ export function createAddonEntity(addon, applicationId): Entity {
         applicationId: applicationId,
         category: ['platform'],
         endpoints: [addon.web_url],
+        function: [],
       },
     },
   });

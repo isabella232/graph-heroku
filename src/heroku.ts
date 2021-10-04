@@ -1,5 +1,4 @@
 import Heroku from 'heroku-client';
-import { retry } from '@lifeomic/attempt';
 import {
   HerokuEnterpriseAccount,
   HerokuEnterpriseAccountTeam,
@@ -9,28 +8,46 @@ import {
   HerokuTeamApp,
   HerokuAppAddon,
 } from './types/herokuTypes';
+import {
+  IntegrationProviderAPIError,
+  IntegrationProviderAuthorizationError,
+} from '@jupiterone/integration-sdk-core';
 
 interface HerokuIntegrationConfig {
   apiKey: string;
 }
 
-// 4500 requests allowed per hour, per API.
-const API_REQUESTS_PER_HOUR = 4500;
-const API_REQUESTS_PER_SECOND = API_REQUESTS_PER_HOUR / 60 / 60;
-const SECONDS_PER_API_REQUEST = 1 / API_REQUESTS_PER_SECOND;
+export function routeToEndpoint(route: string): string {
+  return `https://api.heroku.com${route}`;
+}
 
-const rateLimitErrorCode = 429;
+export function createRequestError(
+  endpoint: string,
+  err: any,
+): IntegrationProviderAPIError {
+  const { statusCode: status } = err;
+  const statusText = err.body?.message || 'Heroku API request error received';
 
-export async function handleError(err, attemptContext): Promise<void> {
-  if (err.statusCode) {
-    if (err.statusCode !== rateLimitErrorCode && err.statusCode < 500) {
-      attemptContext.abort();
-    }
+  if (status === 403) {
+    return new IntegrationProviderAuthorizationError({
+      cause: err,
+      endpoint,
+      status,
+      statusText,
+    });
   }
+
+  return new IntegrationProviderAPIError({
+    code: 'UNKNOWN_HEROKU_API_ERROR',
+    endpoint,
+    status,
+    statusText: statusText,
+    fatal: false,
+  });
 }
 
 export class HerokuClient {
-  heroku: Heroku;
+  private readonly heroku: Heroku;
 
   constructor(config: HerokuIntegrationConfig) {
     this.heroku = new Heroku({
@@ -38,13 +55,13 @@ export class HerokuClient {
     });
   }
 
-  retryGet(route: string): Promise<any[]> {
-    return retry(async () => this.heroku.get(route), {
-      handleError,
-      delay: Math.ceil(SECONDS_PER_API_REQUEST),
-      factor: 2,
-      maxAttempts: 5,
-    });
+  async request<T>(route: string): Promise<T[]> {
+    try {
+      const response = await this.heroku.get(route);
+      return response;
+    } catch (err) {
+      throw createRequestError(routeToEndpoint(route), err);
+    }
   }
 
   /**
@@ -53,7 +70,7 @@ export class HerokuClient {
    *
    */
   getEnterpriseAccounts(): Promise<HerokuEnterpriseAccount[]> {
-    return this.retryGet('/enterprise-accounts');
+    return this.request('/enterprise-accounts');
   }
 
   /**
@@ -63,17 +80,17 @@ export class HerokuClient {
   getEnterpriseAccountTeams(
     enterpriseAccountId: string,
   ): Promise<HerokuEnterpriseAccountTeam[]> {
-    return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/teams`);
+    return this.request(`/enterprise-accounts/${enterpriseAccountId}/teams`);
   }
 
   /**
    * WARNING: Heroku labels this API as in DEVELOPMENT
-   * https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
+   * https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-list
    */
   getEnterpriseAccountMembers(
     enterpriseAccountId: string,
   ): Promise<HerokuEnterpriseAccountMember[]> {
-    return this.retryGet(`/enterprise-accounts/${enterpriseAccountId}/members`);
+    return this.request(`/enterprise-accounts/${enterpriseAccountId}/members`);
   }
 
   /**
@@ -81,7 +98,7 @@ export class HerokuClient {
    * https://devcenter.heroku.com/articles/platform-api-reference#team-member-list
    */
   getTeamMembers(teamId: string): Promise<HerokuTeamMember[]> {
-    return this.retryGet(`/teams/${teamId}/members`);
+    return this.request(`/teams/${teamId}/members`);
   }
 
   /**
@@ -89,7 +106,7 @@ export class HerokuClient {
    * https://devcenter.heroku.com/articles/platform-api-reference#account-info-by-user
    */
   getUser(userId: string): Promise<HerokuUser[]> {
-    return this.retryGet(`/users/${userId}`);
+    return this.request(`/users/${userId}`);
   }
 
   /**
@@ -97,7 +114,7 @@ export class HerokuClient {
    * https://devcenter.heroku.com/articles/platform-api-reference#team-app-list-by-team
    */
   getTeamApps(teamId: string): Promise<HerokuTeamApp[]> {
-    return this.retryGet(`/teams/${teamId}/apps`);
+    return this.request(`/teams/${teamId}/apps`);
   }
 
   /**
@@ -105,6 +122,6 @@ export class HerokuClient {
    * https://devcenter.heroku.com/articles/platform-api-reference#add-on-list-by-app
    */
   getAppAddons(appid: string): Promise<HerokuAppAddon[]> {
-    return this.retryGet(`/apps/${appid}/addons`);
+    return this.request(`/apps/${appid}/addons`);
   }
 }

@@ -810,6 +810,13 @@
   resolved "https://registry.yarnpkg.com/@types/har-format/-/har-format-1.2.7.tgz#debfe36378f26c4fc2abca1df99f00a8ff94fd29"
   integrity sha512-/TPzUG0tJn5x1TUcVLlDx2LqbE58hyOzDVAc9kf8SpOEmguHjU6bKUyfqb211AdqLOmU/SNyXvLKPNP5qTlfRw==
 
+"@types/heroku-client@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/heroku-client/-/heroku-client-3.1.0.tgz#cc82cf035b8a5012510bdfd3b5732fe75e541537"
+  integrity sha512-Cz4rkaz196lpZnnoucj32FnaYXWcNpBRVCvXdwYCNXUkPAinvgp4pRj2jDGFiLwALso3AbYFuDe40HdI42ecqw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.3.tgz#4ba8ddb720221f432e443bd5f9117fd22cfd4762"
