@@ -10,6 +10,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## 2.3.1 - 2021-10-04
+
 ### Changed
 
 - Improved OAuth authorization error handling. The integration will now report
