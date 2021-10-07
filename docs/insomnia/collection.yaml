@@ -1,0 +1,282 @@
+_type: export
+__export_format: 4
+__export_date: 2021-10-07T16:26:22.309Z
+__export_source: insomnia.desktop.app:v2021.5.3
+resources:
+  - _id: req_2bbaa7fd5b7b4684b43e07af1fa393a5
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633620065768
+    created: 1633618499583
+    url: https://api.heroku.com/enterprise-accounts
+    name: /enterprise-accounts
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1633541127527
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_95ef1375cdb74e4286ff5783b5595cac
+    parentId: wrk_35cc4880db0649fba0ff581903be12d1
+    modified: 1633618499582
+    created: 1633618499582
+    name: Heroku
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1623780787579
+    _type: request_group
+  - _id: wrk_35cc4880db0649fba0ff581903be12d1
+    parentId: null
+    modified: 1633618499466
+    created: 1633618499466
+    name: heroku
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_d238ad94cad341a390e046de6722c030
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633618499586
+    created: 1633618499586
+    url: https://api.heroku.com/enterprise-accounts/{% response 'body',
+      'req_d9b5c915edaa46409ef96fb0551ce245', 'b64::JFswXS5pZA==::46b', 'never',
+      60 %}/members
+    name: /enterprise-accounts/{enterpriseAccountId}/members
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1633541127514.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1f525e2cb9174e2e9eb707a0e90fe906
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633618499588
+    created: 1633618499588
+    url: https://api.heroku.com/enterprise-accounts/{% response 'body',
+      'req_d9b5c915edaa46409ef96fb0551ce245', 'b64::JFswXS5pZA==::46b', 'never',
+      60 %}/teams
+    name: /enterprise-accounts/{enterpriseAccountId}/teams
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1633541127508.25
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_92ae0f972805425781f9fe86206fa954
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633618499590
+    created: 1633618499590
+    url: https://api.heroku.com/teams/{% response 'body',
+      'req_0e3841d1a2de4c77bc2fe5c6042e0ad5', 'b64::JFswXS5pZA==::46b', 'never',
+      60 %}/members
+    name: /teams/{teamId}/members
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1633541127492.625
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_69ac786226d54e71bbe396d14461eb7d
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633618499591
+    created: 1633618499591
+    url: https://api.heroku.com/teams/{% response 'body',
+      'req_0e3841d1a2de4c77bc2fe5c6042e0ad5', 'b64::JFswXS5pZA==::46b', 'never',
+      60 %}/apps
+    name: /teams/{teamId}/apps
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1633251966249.1875
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_21c5e85be69742a59270d8fb0d58bdc3
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633618499593
+    created: 1633618499593
+    url: https://api.heroku.com/apps/{% response 'body',
+      'req_94013c712eee405d8491da5411188f70', 'b64::JFswXS5pZA==::46b', 'never',
+      60 %}/addons
+    name: /apps/{appId}/addons
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1632818224391.8438
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2af88da3e4454ccfab8c65ce887771d4
+    parentId: fld_95ef1375cdb74e4286ff5783b5595cac
+    modified: 1633618499595
+    created: 1633618499595
+    url: https://api.heroku.com/oauth/authorizations
+    name: /oauth/authorizations
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f7568641c7e8464bb6bd2f7249bdd919
+        name: accept
+        value: application/vnd.heroku+json; version=3
+        description: ""
+      - id: pair_82c1a6ccd6744444896a96df0f1cacd8
+        name: user-agent
+        value: j1dev
+        description: ""
+    authentication:
+      type: bearer
+      token: "{{ _.heroku.apiKey }}"
+    metaSortKey: -1632818224341.8438
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_5ec85483fa6c48ca8c6b15a5ea6f95db
+    parentId: wrk_35cc4880db0649fba0ff581903be12d1
+    modified: 1633618548385
+    created: 1633618499469
+    name: Base Environment
+    data:
+      heroku:
+        apiKey: <API_KEY>
+    dataPropertyOrder:
+      "&":
+        - heroku
+      "&~|heroku":
+        - apiKey
+    color: null
+    isPrivate: false
+    metaSortKey: 1618263445314
+    _type: environment
+  - _id: jar_e29b2c04012940eea71947ea1f8db7df
+    parentId: wrk_35cc4880db0649fba0ff581903be12d1
+    modified: 1633618536663
+    created: 1633618499478
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_4c75c304aaa2458f871d69416e06294f
+    parentId: wrk_35cc4880db0649fba0ff581903be12d1
+    modified: 1633618499623
+    created: 1633618499483
+    fileName: heroku
+    contents: ""
+    contentType: yaml
+    _type: api_spec
