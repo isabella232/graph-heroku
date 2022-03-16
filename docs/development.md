@@ -32,6 +32,12 @@ etc.
 Once you've created your account, you'll need to generate an API Key to access
 the Heroku API.
 
+NOTE: The account used to generate the API key will dictate what permissions it
+has. For full access to all available data, an account with the `admin` role
+should be used. Using an account with the `member` role will be able to pull in
+most data, but currently application add-on information is only available using
+the `admin` role.
+
 1. Visit <https://dashboard.heroku.com/account/applications> and click
    `Create authorization`.
    ![Heroku Authorizations Page](./images/heroku-authorizations.png)
